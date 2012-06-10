@@ -58,4 +58,8 @@ public class Fecha {
 	public Boolean esPosterior(Fecha otraFecha){
 		return !( this.esAnterior(otraFecha) || this.esLaMisma(otraFecha) );
 	}
+
+	public String comoString() {		
+		return "" + this.anios + this.meses + this.dias;
+	}
 }
