@@ -18,7 +18,7 @@ public abstract class Usuario {
 		this.aterrizar = aterrizar; //Puede cambiar cuando hayan mas aerolineas!
 		this.busquedasHistoricas = new ArrayList<Asiento>();
 	}
-	public ArrayList<Asiento> buscarArientos(String origen, String destino, Fecha salida, Fecha llegada){
+	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha salida, Fecha llegada){
 		ArrayList<Asiento> busquedaActual = this.aterrizar.buscarAsientos(origen, destino, salida, llegada, this);
 		busquedasHistoricas.addAll(busquedaActual);
 		return busquedaActual;

@@ -5,7 +5,7 @@ public class UsuarioEstandar extends Usuario {
 	private Float comprasTotales;
 	private NivelImportancia nivelImportancia;
 	
-	private UsuarioEstandar(String nombre, String apellido, String dni, SistemaDeComprasAterrizar aterrizar){
+	public UsuarioEstandar(String nombre, String apellido, String dni, SistemaDeComprasAterrizar aterrizar){
 		super(nombre, apellido, dni, aterrizar);
 		this.comprasTotales = (float) 0;
 		this.nivelImportancia = new NivelNormal();
@@ -35,5 +35,14 @@ public class UsuarioEstandar extends Usuario {
 	@Override
 	public Float adicionalPrecio() {
 		return (float) 0;
+	}
+	
+	/**
+	 * Util para pruebas
+	 */
+	public void setComprasTotales(Float comprasTotales){
+		this.comprasTotales = comprasTotales;
+		if(this.comprasTotales > 100000)
+			this.nivelImportancia = new NivelVip();
 	}
 }

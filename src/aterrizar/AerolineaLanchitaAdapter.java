@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class AerolineaLanchitaAdapter implements AerolineaAdapter {
 	private AerolineaLanchita lanchita;
 	private static Integer porcentajeImpuesto = 15;
+	
 	public AerolineaLanchitaAdapter(){
 		this.lanchita = AerolineaLanchita.getInstance();
 	}
@@ -35,6 +36,8 @@ public class AerolineaLanchitaAdapter implements AerolineaAdapter {
 		lanchita.comprar( unAsiento.getCodigo() );
 	}
 	
-	
+	public void miAerolinea(AerolineaLanchita unaAero){
+		this.lanchita = unaAero;
+	}
 	
 }

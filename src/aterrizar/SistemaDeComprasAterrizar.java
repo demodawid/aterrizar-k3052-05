@@ -26,6 +26,10 @@ public class SistemaDeComprasAterrizar {
 		this.aerolineas.add(new AerolineaLanchitaAdapter());
 	}
 	
+	public void setAerolineas(ArrayList<AerolineaAdapter> aerolineas){
+		this.aerolineas = aerolineas;
+	}
+	
 	/**
 	 * Busca asientos en todas las aerolineas que conoce para un determinado usuario,
 	 * con origen, destino, fecha de salida y fecha de llegada.
@@ -36,7 +40,7 @@ public class SistemaDeComprasAterrizar {
 		for(AerolineaAdapter unaAerolinea: aerolineas){
 			asientos.addAll(unaAerolinea.buscarAsientos(origen, destino, salida, llegada, usuario));
 		}
-		return null;
+		return asientos;
 	}
 
 	public void comprar(Asiento unAsiento, Usuario unUsuario) {
