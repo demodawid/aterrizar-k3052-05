@@ -5,7 +5,7 @@ import com.lanchita.*;
 import java.util.ArrayList;
 
 public class AerolineaLanchitaAdapter implements AerolineaAdapter {
-	private AerolineaLanchita lanchita;
+	protected AerolineaLanchita lanchita;
 	private static Integer porcentajeImpuesto = 15;
 	
 	public AerolineaLanchitaAdapter(){
@@ -15,10 +15,19 @@ public class AerolineaLanchitaAdapter implements AerolineaAdapter {
 	@Override
 	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha salida, Fecha llegada, Usuario usuario){
 		
-		String[][] asientos = this.lanchita.asientosDisponibles(origen, destino, salida.comoString(), null,
-																				llegada.comoString(), null);
+		//Si llega null en salida o llegada, usar null para la búsqueda
+		String strSalida = null;
+		String strLlegada = null;
+		try{strSalida = salida.comoString();}catch(NullPointerException e){}
+		try{strLlegada = llegada.comoString();}catch(NullPointerException e){}
+		
+		String[][] asientos = this.lanchita.asientosDisponibles(origen, destino, strSalida, null,
+																				strLlegada, null);
 		ArrayList<Asiento> misAsientos = new ArrayList<Asiento>();
 		Asiento asientoActual;
+		
+		if(asientos == null)
+			return misAsientos;
 		
 		for (String[] unAsientoStr: asientos){
 			Float precio = ( Float.valueOf(unAsientoStr[1]) ) * ( (porcentajeImpuesto/100) + 1 ) + usuario.adicionalPrecio();

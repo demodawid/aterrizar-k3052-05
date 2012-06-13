@@ -1,5 +1,7 @@
 package aterrizar;
 
+import java.util.ArrayList;
+
 public class UsuarioEstandar extends Usuario {
 	
 	private Float comprasTotales;
@@ -44,5 +46,17 @@ public class UsuarioEstandar extends Usuario {
 		this.comprasTotales = comprasTotales;
 		if(this.comprasTotales > 100000)
 			this.nivelImportancia = new NivelVip();
+	}
+	
+	public ArrayList<Asiento> getBusquedasHistoricas(){
+		return this.busquedasHistoricas;
+	}
+	
+	public Float getComprasTotales(){
+		return this.comprasTotales;
+	}
+	
+	public NivelImportancia getNivelImportancia(){
+		return this.nivelImportancia;
 	}
 }
