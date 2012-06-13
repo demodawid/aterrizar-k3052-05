@@ -1,5 +1,8 @@
 package aterrizar;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
 public class Testotra {
 
 	public static void main(String[] args){
@@ -10,6 +13,29 @@ public class Testotra {
 		LatinoAmericano unFormato = new LatinoAmericano();
 		Fecha unaFecha = unFormato.convertir("20/05/1989");
 		System.out.println("La fecha es: " + unaFecha.getDias() + " del " + unaFecha.getMeses() + " de " + unaFecha.getAnios());
+		
+		Float unNum = (float) 45;
+		
+		System.out.println(unNum);
+		
+		unNum = Float.valueOf("123.13");
+		System.out.println(unNum);
+		
+		Usuario demian = new UsuarioEstandar("Demian", "Dawid", "34519332", SistemaDeComprasAterrizar.getInstance());
+		ArrayList<Asiento> resultado = demian.buscarAsientos("Bue", null, null, null);
+		for(Asiento unAsiento: resultado){
+			System.out.println(unAsiento.getUbicacion() +" "+ 
+						unAsiento.getClase()+" $" +
+						unAsiento.getPrecio());
+		}
+		
+		ArrayList<Asiento> resultado2 = new ArrayList<Asiento>();
+		
+		for(Asiento unAsiento: resultado2){
+			
+		}
 	}
+	
+	
 		
 }
