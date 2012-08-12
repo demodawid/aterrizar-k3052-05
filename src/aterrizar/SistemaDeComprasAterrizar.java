@@ -3,10 +3,11 @@ package aterrizar;
 import java.util.ArrayList;
 
 /**
- * 
- * Sistema de compras Aterrizar. Aquí se agregarán las nuevas aerolineas con las
- * que se firme contrato. El usuario interactúa solo con este facade de nuestro sistema.
- * Debería existir solo una implementación de esta clase.
+ * Sistema de compras Aterrizar. Aquï¿½ se agregarï¿½n las nuevas aerolï¿½neas con las
+ * que se firme contrato. Esta clase se encargarï¿½ de interactuar con todas las 
+ * aerolï¿½neas de forma adecuada. El usuario interactï¿½a solo con este facade
+ * de nuestro sistema, y la comunicacion con las aerolï¿½neas es transparente para el.
+ * Deberï¿½a existir solo una implementaciï¿½n de esta clase.
  *
  */
 public class SistemaDeComprasAterrizar {
@@ -24,6 +25,7 @@ public class SistemaDeComprasAterrizar {
 	private SistemaDeComprasAterrizar(){
 		this.aerolineas = new ArrayList<AerolineaAdapter>();
 		this.aerolineas.add(new AerolineaLanchitaAdapter());
+		
 	}
 	
 	public void setAerolineas(ArrayList<AerolineaAdapter> aerolineas){
