@@ -15,14 +15,19 @@ public class AerolineaLanchitaAdapter implements AerolineaAdapter {
 	@Override
 	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha salida, Fecha llegada, Usuario usuario){
 		
-		//Si llega null en salida o llegada, usar null para la búsqueda
-		String strSalida = null;
-		String strLlegada = null;
-		try{strSalida = salida.comoString();}catch(NullPointerException e){}
-		try{strLlegada = llegada.comoString();}catch(NullPointerException e){}
+		//Si llega null o fecha invalida en salida o llegada, usar null para la bï¿½squeda
+		String strSalida = "";
+		String strLlegada = "";
+		try{strSalida = salida.comoString();}
+			catch(NullPointerException e){strSalida = null;}
+			catch(FechaInvalidaException e){strSalida = null;}
+		try{strLlegada = llegada.comoString();}
+			catch(NullPointerException e){strLlegada = null;}
+			catch(FechaInvalidaException e){strLlegada = null;}
 		
 		String[][] asientos = this.lanchita.asientosDisponibles(origen, destino, strSalida, null,
 																				strLlegada, null);
+		
 		ArrayList<Asiento> misAsientos = new ArrayList<Asiento>();
 		Asiento asientoActual;
 		

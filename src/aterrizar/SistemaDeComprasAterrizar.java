@@ -40,7 +40,9 @@ public class SistemaDeComprasAterrizar {
 											Fecha llegada, Usuario usuario) {
 		ArrayList<Asiento> asientos = new ArrayList<Asiento>();
 		for(AerolineaAdapter unaAerolinea: aerolineas){
-			asientos.addAll(unaAerolinea.buscarAsientos(origen, destino, salida, llegada, usuario));
+			ArrayList<Asiento> asientosAct = unaAerolinea.buscarAsientos(origen, destino, new Fecha(0,0,0),new Fecha(0,0,0) , usuario);
+			asientosAct = this.filtrarPorFechas(asientosAct);
+			asientos.addAll(asientosAct);
 		}
 		return asientos;
 	}
@@ -48,5 +50,9 @@ public class SistemaDeComprasAterrizar {
 	public void comprar(Asiento unAsiento, Usuario unUsuario) {
 		unAsiento.getAerolinea().comprar(unAsiento);
 				
+	}
+	
+	public ArrayList<Asiento> filtrarPorFechas(ArrayList<Asiento> asientos){
+		return asientos;//TODO
 	}
 }

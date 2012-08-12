@@ -59,7 +59,11 @@ public class Fecha {
 		return !( this.esAnterior(otraFecha) || this.esLaMisma(otraFecha) );
 	}
 
-	public String comoString() {		
+	public String comoString() {
+		if(this.anios == 0 || this.meses == 0 || this.dias == 0){
+			throw new FechaInvalidaException();
+		}
+		
 		return "" + this.anios + this.meses + this.dias;
 	}
 }
