@@ -40,7 +40,7 @@ public class SistemaDeComprasAterrizar {
 //	this.aterrizar.buscarAsientos(origen, destino, fecha, clase, 
 //			precioMin, precioMax, conReservados, this);
 	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha salida, String clase,
-											Float precioMin, Float precioMax, Boolean conReservados, Usuario usuario) {
+											Float precioMin, Float precioMax, Boolean conReservados, Criterio uncriterio, Usuario usuario) {
 		
 		ArrayList<Asiento> asientos = new ArrayList<Asiento>();
 		for(AerolineaAdapter unaAerolinea: aerolineas){
