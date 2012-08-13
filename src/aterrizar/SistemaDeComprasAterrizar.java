@@ -1,6 +1,7 @@
 package aterrizar;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Sistema de compras Aterrizar. Aqu� se agregar�n las nuevas aerol�neas con las
@@ -37,8 +38,6 @@ public class SistemaDeComprasAterrizar {
 	 * con origen, destino, fecha de salida y fecha de llegada.
 	 */
 	
-//	this.aterrizar.buscarAsientos(origen, destino, fecha, clase, 
-//			precioMin, precioMax, conReservados, this);
 	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha salida, String clase,
 											Float precioMin, Float precioMax, Boolean conReservados, Criterio uncriterio, Usuario usuario) {
 		
@@ -48,6 +47,8 @@ public class SistemaDeComprasAterrizar {
 			asientosAct = this.filtrarAsientos(asientosAct,clase, precioMin, precioMax, conReservados);
 			asientos.addAll(asientosAct);
 		}
+		//Aca el ordenamiento
+		Collections.sort(asientos, uncriterio);
 		return asientos;
 	}
 

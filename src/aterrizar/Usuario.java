@@ -20,7 +20,7 @@ public abstract class Usuario {
 	}
 	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha salida, Fecha llegada){
 		ArrayList<Asiento> busquedaActual = this.aterrizar.buscarAsientos(origen, destino, new Fecha(0,0,0), "PET", 
-															(float)0, (float)100000, false, null, this);
+															(float)0, (float)100000, false, new SinOrden(), this);
 		busquedasHistoricas.addAll(busquedaActual);
 		return busquedaActual;
 	}
