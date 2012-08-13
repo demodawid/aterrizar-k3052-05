@@ -64,7 +64,7 @@ public class SistemaDeComprasAterrizar {
 			if( (clase.contains(asientoAct.getClase()) ||  clase == ""  )&&
 				(precioMin <= asientoAct.getPrecio() ) &&
 				(precioMax >= asientoAct.getPrecio() || precioMax == 0)&&
-				(ubicacion == asientoAct.getUbicacion()) || ubicacion == "" ){
+				(ubicacion == asientoAct.getUbicacion() || ubicacion == "") ){
 				
 				asientosFiltrados.add(asientoAct);
 			}
