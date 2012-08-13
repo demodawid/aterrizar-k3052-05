@@ -2,6 +2,7 @@ package aterrizar;
 
 import com.lanchita.*;
 //import java.util.List;
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class AerolineaLanchitaAdapter implements AerolineaAdapter {
@@ -37,6 +38,10 @@ public class AerolineaLanchitaAdapter implements AerolineaAdapter {
 		for (String[] unAsientoStr: asientos){
 			Float precio = ( Float.valueOf(unAsientoStr[1]) ) * ( (porcentajeImpuesto/100) + 1 ) + usuario.adicionalPrecio();
 			asientoActual = new Asiento(unAsientoStr[0], precio, unAsientoStr[2],unAsientoStr[3], unAsientoStr[4], this);
+			
+			
+			asientoActual = new Asiento(unAsientoStr[0], precio, unAsientoStr[2], unAsientoStr[3] , unAsientoStr[4], this, 
+										new Time(0,0,0), new Time(0,0,0), salida);
 			
 			if( usuario.puedeVer(asientoActual) )
 				misAsientos.add(asientoActual);
