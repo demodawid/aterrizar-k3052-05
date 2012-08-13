@@ -12,7 +12,6 @@ public class Asiento {
 	private Time horaLlegada;
 	private Fecha fecha;
 	private AerolineaAdapter aerolinea;
-	public Asiento escala;
 	
 	@SuppressWarnings("deprecation")
 	public Asiento(String codigo, Float precio, String clase, String ubicacion, String estado, AerolineaAdapter aerolinea){
@@ -26,7 +25,6 @@ public class Asiento {
 		this.horaLlegada = new Time(0,0,0);
 		this.horaSalida = new Time(0,0,0);
 		this.fecha = new Fecha(0,0,0);
-		this.escala = null;
 	}
 	
 	public Asiento(String codigo, Float precio, String clase, String ubicacion, String estado, AerolineaAdapter aerolinea, Time horaLlegada, Time horaSalida, Fecha fecha){
@@ -40,7 +38,6 @@ public class Asiento {
 		this.horaLlegada = horaLlegada;
 		this.horaSalida = horaSalida;
 		this.fecha = fecha;
-		this.escala = null;
 	}
 	
 	public Boolean esSuperOferta(){
