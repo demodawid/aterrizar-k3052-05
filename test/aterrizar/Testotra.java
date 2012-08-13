@@ -31,9 +31,20 @@ public class Testotra {
 		
 		ArrayList<Asiento> resultado2 = new ArrayList<Asiento>();
 		
-		for(Asiento unAsiento: resultado2){
-			
+	
+		String strTest = "abc-123";
+		String[] temp = strTest.split("-");
+		System.out.println(temp[1]);
+		
+		String testOtro1 = "ABC";
+		String testOtro2 = "B";
+		if(testOtro1.contains(testOtro2)){
+			System.out.println("Si");
+		}else{
+			System.out.println("No");
 		}
+		
+		
 	}
 	
 	

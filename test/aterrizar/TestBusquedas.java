@@ -61,7 +61,7 @@ public class TestBusquedas {
 		ArrayList<Asiento> asientos = demian.getBusquedasHistoricas();
 		//Deberían verse solo los 3 asientos que son de primera
 		for(Asiento unAsiento: asientos){
-			assert(unAsiento.getClase() == "P");
+			assertTrue(unAsiento.getClase() == "P");
 		}
 		
 		
@@ -82,7 +82,7 @@ public class TestBusquedas {
 		ArrayList<Asiento> asientos = demian.getBusquedasHistoricas();
 		//Deberían verse asientos de primera y ejecutiva
 		for(Asiento unAsiento: asientos){
-			assert( (unAsiento.getClase() == "P") || (unAsiento.getClase() == "E") );
+			assertTrue( (unAsiento.getClase() == "P") || (unAsiento.getClase() == "E") );
 		}
 	}
 	
@@ -101,7 +101,7 @@ public class TestBusquedas {
 		ArrayList<Asiento> asientos = demian.getBusquedasHistoricas();
 		//Deberían verse solo asientos en el rango de $0 a $600
 		for(Asiento unAsiento: asientos){
-			assert( (unAsiento.getPrecio() >= 0) && (unAsiento.getPrecio() <= 600) );
+			assertTrue( (unAsiento.getPrecio() >= 0) && (unAsiento.getPrecio() <= 600) );
 		}
 	}
 	
@@ -159,6 +159,27 @@ public class TestBusquedas {
 			anterior = unAsiento.getPrecio();
 			
 		}
+	}
+	@Test
+	public void siBuscoConOrdenPopularidadAndaBien(){
+		//Hago que devuelva asientos de precios distintos
+		String[][] asientosADevolver = new String[][] {{"ABC-123","123.45","P","V","D"},
+														{"CARO-123","500.12","T","V","D"}, 
+														{"ABC-123","12345.67","T","V","D"},
+														{"CARO-123","5555.55","P","V","D"},
+														{"ABC-123","2.5","E","V","D"},
+														{"ABC-123","100.00","P","V","D"}};
+		Mockito.when(aerolineaMock.asientosDisponibles("BUE", "LA", null, null, null, null)).thenReturn(asientosADevolver);
+		//Busco Descendente
+		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new PrecioDescendente());
+		//Compro el primero, que debería ser el mas caro, de vuelo "CARO":  
+		demian.comprar(demian.getBusquedasHistoricas().get(0));
+		//Ahora el vuelo "CARO" es el mas popular!
+		//Busca florencia por orden de popularidad:
+		florencia.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new Popularidad());
+		//El primero debería ser el otro del vuelo "CARO"
+		String vuelo = florencia.getBusquedasHistoricas().get(0).vuelo();
+		assertTrue(vuelo.equals("CARO"));
 	}
 
 }
