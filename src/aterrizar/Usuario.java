@@ -24,13 +24,18 @@ public abstract class Usuario {
 	 */
 	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha salida, Fecha llegada){
 		ArrayList<Asiento> busquedaActual = this.aterrizar.buscarAsientos(origen, destino, new Fecha(0,0,0), "PET", "",
-															(float)0, (float)100000, false, new SinOrden(), this);
+															(float)0, (float)0, false, new SinOrden(), this);
 		busquedasHistoricas.addAll(busquedaActual);
 		return busquedaActual;
 	}
 	
 	/**
-	 * Este metodo buscar es el nuevo para la entrega 3
+	 * Este metodo buscar es el nuevo para la entrega 3.
+	 * Parámetros obligatorios: Origen, Destino, Fecha
+	 * Parámetros opcionales: clase, ubicación, (si no se usa: "")
+	 * 						  precioMin, precioMax (si no se usa: 0)
+	 * 						  conReservados (si no se usa: true)
+	 * 						  unCriterio	(si no se usa: new SinOrden() )
 	 */
 	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha fecha, String clase, String ubicacion,
 											Float precioMin, Float precioMax, Boolean conReservados, Criterio unCriterio){
