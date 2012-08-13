@@ -38,7 +38,8 @@ public abstract class Usuario {
 	 * 						  unCriterio	(si no se usa: new SinOrden() )
 	 */
 	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha fecha, String clase, String ubicacion,
-											Float precioMin, Float precioMax, Boolean conReservados, Criterio unCriterio){
+											Float precioMin, Float precioMax, Boolean conReservados, Criterio unCriterio,
+											Boolean conEscalas){
 		ArrayList<Asiento> busquedaActual = this.aterrizar.buscarAsientos(origen, destino, fecha, clase, ubicacion, precioMin, 
 																		precioMax, conReservados, unCriterio, this);
 		busquedasHistoricas.addAll(busquedaActual);
