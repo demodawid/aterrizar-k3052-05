@@ -56,7 +56,7 @@ public class TestBusquedas {
 														{"ABC-123","123.45","E","V","D"},
 														{"ABC-123","123.45","P","V","D"}};
 		Mockito.when(aerolineaMock.asientosDisponibles("BUE", "LA", null, null, null, null)).thenReturn(asientosADevolver);
-		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "P", "", (float)0 , (float)1000, true, new SinOrden());
+		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "P", "", (float)0 , (float)1000, true, new SinOrden(), false);
 		
 		ArrayList<Asiento> asientos = demian.getBusquedasHistoricas();
 		//Deberían verse solo los 3 asientos que son de primera
@@ -77,7 +77,7 @@ public class TestBusquedas {
 														{"ABC-123","123.45","E","V","D"},
 														{"ABC-123","123.45","P","V","D"}};
 		Mockito.when(aerolineaMock.asientosDisponibles("BUE", "LA", null, null, null, null)).thenReturn(asientosADevolver);
-		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PE", "", (float)0 , (float)1000, true, new SinOrden());
+		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PE", "", (float)0 , (float)1000, true, new SinOrden(), false);
 		
 		ArrayList<Asiento> asientos = demian.getBusquedasHistoricas();
 		//Deberían verse asientos de primera y ejecutiva
@@ -96,7 +96,7 @@ public class TestBusquedas {
 														{"ABC-123","2.5","E","V","D"},
 														{"ABC-123","100.00","P","V","D"}};
 		Mockito.when(aerolineaMock.asientosDisponibles("BUE", "LA", null, null, null, null)).thenReturn(asientosADevolver);
-		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new SinOrden());
+		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new SinOrden(), false);
 		
 		ArrayList<Asiento> asientos = demian.getBusquedasHistoricas();
 		//Deberían verse solo asientos en el rango de $0 a $600
@@ -115,7 +115,7 @@ public class TestBusquedas {
 														{"ABC-123","2.5","E","V","D"},
 														{"ABC-123","100.00","P","V","D"}};
 		Mockito.when(aerolineaMock.asientosDisponibles("BUE", "LA", null, null, null, null)).thenReturn(asientosADevolver);
-		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new PrecioDescendente());
+		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new PrecioDescendente(), false);
 		
 		ArrayList<Asiento> asientos = demian.getBusquedasHistoricas();
 		//Los asientos deberían estar ordenados por orden descendente de precio
@@ -143,7 +143,7 @@ public class TestBusquedas {
 														{"ABC-123","2.5","E","V","D"},
 														{"ABC-123","100.00","P","V","D"}};
 		Mockito.when(aerolineaMock.asientosDisponibles("BUE", "LA", null, null, null, null)).thenReturn(asientosADevolver);
-		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new PrecioAscendente());
+		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new PrecioAscendente(),false);
 		
 		ArrayList<Asiento> asientos = demian.getBusquedasHistoricas();
 		//Los asientos deberían estar ordenados por orden descendente de precio
@@ -171,12 +171,12 @@ public class TestBusquedas {
 														{"ABC-123","100.00","P","V","D"}};
 		Mockito.when(aerolineaMock.asientosDisponibles("BUE", "LA", null, null, null, null)).thenReturn(asientosADevolver);
 		//Busco Descendente
-		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new PrecioDescendente());
+		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new PrecioDescendente(),false);
 		//Compro el primero, que debería ser el mas caro, de vuelo "CARO":  
 		demian.comprar(demian.getBusquedasHistoricas().get(0));
 		//Ahora el vuelo "CARO" es el mas popular!
 		//Busca florencia por orden de popularidad:
-		florencia.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new Popularidad());
+		florencia.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new Popularidad(),false);
 		//El primero debería ser el otro del vuelo "CARO"
 		String vuelo = florencia.getBusquedasHistoricas().get(0).vuelo();
 		assertTrue(vuelo.equals("CARO"));
