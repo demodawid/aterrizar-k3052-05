@@ -14,6 +14,8 @@ import java.util.Collections;
 public class SistemaDeComprasAterrizar {
 	private static final SistemaDeComprasAterrizar INSTANCE = new SistemaDeComprasAterrizar();
 	
+	private ArrayList<Asiento> ComprasHistoricas; 
+	
 	ArrayList<AerolineaAdapter> aerolineas;
 	
 	public static SistemaDeComprasAterrizar getInstance(){
@@ -26,6 +28,7 @@ public class SistemaDeComprasAterrizar {
 	private SistemaDeComprasAterrizar(){
 		this.aerolineas = new ArrayList<AerolineaAdapter>();
 		this.aerolineas.add(new AerolineaLanchitaAdapter());
+		this.ComprasHistoricas = new ArrayList<Asiento>();
 		
 	}
 	
@@ -72,7 +75,16 @@ public class SistemaDeComprasAterrizar {
 
 	public void comprar(Asiento unAsiento, Usuario unUsuario) {
 		unAsiento.getAerolinea().comprar(unAsiento);
+		ComprasHistoricas.add(unAsiento);
 				
+	}
+	public int popularidad(String unVuelo){
+		int cant = 0;
+		for(Asiento unAsiento: ComprasHistoricas){
+			if(unAsiento.vuelo() == unVuelo)
+				cant++;
+		}
+		return cant;
 	}
 	
 }

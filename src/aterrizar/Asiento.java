@@ -24,6 +24,7 @@ public class Asiento {
 		this.aerolinea = aerolinea;
 		this.horaLlegada = new Time(0,0,0);
 		this.horaSalida = new Time(0,0,0);
+		this.fecha = new Fecha(0,0,0);
 	}
 	
 	public Asiento(String codigo, Float precio, String clase, String ubicacion, String estado, AerolineaAdapter aerolinea, Time horaLlegada, Time horaSalida, Fecha fecha){
@@ -45,6 +46,15 @@ public class Asiento {
 				(this.clase == "E" && this.precio < 4000 );
 	}
 	
+	public int tiempoDeVuelo(){
+		return 0;
+	}
+	
+	public String vuelo(){
+		String[] temp;
+		temp = this.codigo.split("-");
+		return temp[0];
+	}
 	
 	/**
 	 * Getters y Setters:
