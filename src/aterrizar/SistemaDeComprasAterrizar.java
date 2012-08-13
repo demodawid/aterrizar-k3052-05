@@ -38,13 +38,13 @@ public class SistemaDeComprasAterrizar {
 	 * con origen, destino, fecha de salida y fecha de llegada.
 	 */
 	
-	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha salida, String clase,
+	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha salida, String clase, String ubicacion,
 											Float precioMin, Float precioMax, Boolean conReservados, Criterio uncriterio, Usuario usuario) {
 		
 		ArrayList<Asiento> asientos = new ArrayList<Asiento>();
 		for(AerolineaAdapter unaAerolinea: aerolineas){
 			ArrayList<Asiento> asientosAct = unaAerolinea.buscarAsientos(origen, destino, salida, new Fecha(0,0,0), usuario);
-			asientosAct = this.filtrarAsientos(asientosAct,clase, precioMin, precioMax, conReservados);
+			asientosAct = this.filtrarAsientos(asientosAct,clase, ubicacion, precioMin, precioMax, conReservados);
 			asientos.addAll(asientosAct);
 		}
 		//Aca el ordenamiento
@@ -53,14 +53,15 @@ public class SistemaDeComprasAterrizar {
 	}
 
 
-	public ArrayList<Asiento> filtrarAsientos(ArrayList<Asiento> asientos, String clase, Float precioMin, 
+	public ArrayList<Asiento> filtrarAsientos(ArrayList<Asiento> asientos, String clase, String ubicacion, Float precioMin, 
 							Float precioMax,Boolean conReservados) {
 		ArrayList<Asiento> asientosFiltrados = new ArrayList<Asiento>();
 		for(Asiento asientoAct: asientos){
 			
-			if(clase.contains(asientoAct.getClase()) &&
-				precioMin <= asientoAct.getPrecio() &&
-				precioMax >= asientoAct.getPrecio()){
+			if( (clase.contains(asientoAct.getClase()) ||  clase == ""  )&&
+				(precioMin <= asientoAct.getPrecio() ) &&
+				(precioMax >= asientoAct.getPrecio() || precioMax == 0)&&
+				(ubicacion == asientoAct.getUbicacion()) || ubicacion == "" ){
 				
 				asientosFiltrados.add(asientoAct);
 			}

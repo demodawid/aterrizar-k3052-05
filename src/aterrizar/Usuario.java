@@ -19,7 +19,7 @@ public abstract class Usuario {
 		this.busquedasHistoricas = new ArrayList<Asiento>();
 	}
 	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha salida, Fecha llegada){
-		ArrayList<Asiento> busquedaActual = this.aterrizar.buscarAsientos(origen, destino, new Fecha(0,0,0), "PET", 
+		ArrayList<Asiento> busquedaActual = this.aterrizar.buscarAsientos(origen, destino, new Fecha(0,0,0), "PET", "",
 															(float)0, (float)100000, false, new SinOrden(), this);
 		busquedasHistoricas.addAll(busquedaActual);
 		return busquedaActual;
@@ -28,9 +28,9 @@ public abstract class Usuario {
 	/**
 	 * Este metodo buscar es el nuevo para la entrega 3
 	 */
-	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha fecha, String clase,
+	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha fecha, String clase, String ubicacion,
 											Float precioMin, Float precioMax, Boolean conReservados, Criterio unCriterio){
-		ArrayList<Asiento> busquedaActual = this.aterrizar.buscarAsientos(origen, destino, fecha, clase, precioMin, 
+		ArrayList<Asiento> busquedaActual = this.aterrizar.buscarAsientos(origen, destino, fecha, clase, ubicacion, precioMin, 
 																		precioMax, conReservados, unCriterio, this);
 		busquedasHistoricas.addAll(busquedaActual);
 		return busquedaActual;
