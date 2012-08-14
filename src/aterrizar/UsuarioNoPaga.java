@@ -17,7 +17,7 @@ public class UsuarioNoPaga extends Usuario {
 		return (float) 20;
 	}
 	
-	public void reservar(Usuario unUsuario, Asiento unAsiento){
+	public void reservar(Asiento unAsiento){
 		throw new UsuarioNoAutorizadoException();
 	}
 

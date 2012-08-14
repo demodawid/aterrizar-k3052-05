@@ -59,7 +59,7 @@ public class UsuarioEstandar extends Usuario {
 	public NivelImportancia getNivelImportancia(){
 		return this.nivelImportancia;
 	}
-	public void reservar(Usuario unUsuario, Asiento unAsiento){
+	public void reservar(Asiento unAsiento){
 		//TODO
 	}
 }
