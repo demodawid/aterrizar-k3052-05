@@ -59,4 +59,5 @@ public abstract class Usuario {
 	
 	public abstract Boolean puedeVer(Asiento unAsiento);
 	public abstract Float adicionalPrecio();
+	public abstract void reservar(Usuario unUsuario, Asiento unAsiento);
 }

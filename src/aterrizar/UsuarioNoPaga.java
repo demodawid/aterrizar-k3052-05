@@ -16,5 +16,9 @@ public class UsuarioNoPaga extends Usuario {
 	public Float adicionalPrecio() {
 		return (float) 20;
 	}
+	
+	public void reservar(Usuario unUsuario, Asiento unAsiento){
+		throw new UsuarioNoAutorizadoException();
+	}
 
 }
