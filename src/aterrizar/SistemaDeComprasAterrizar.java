@@ -81,7 +81,7 @@ public class SistemaDeComprasAterrizar {
 	}
 
 	public void comprar(Asiento unAsiento, Usuario unUsuario) {
-		unAsiento.getAerolinea().comprar(unAsiento);
+		unAsiento.getAerolinea().comprar(unAsiento, unUsuario);
 		ComprasHistoricas.add(unAsiento);
 				
 	}

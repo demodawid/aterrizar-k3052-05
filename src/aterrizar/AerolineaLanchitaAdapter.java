@@ -51,8 +51,8 @@ public class AerolineaLanchitaAdapter implements AerolineaAdapter {
 	}
 
 	@Override
-	public void comprar(Asiento unAsiento) {
-		lanchita.comprar( unAsiento.getCodigo() );
+	public void comprar(Asiento unAsiento, Usuario unUsuario) {
+		lanchita.comprar( unAsiento.getCodigo());
 	}
 	
 	public void miAerolinea(AerolineaLanchita unaAero){
