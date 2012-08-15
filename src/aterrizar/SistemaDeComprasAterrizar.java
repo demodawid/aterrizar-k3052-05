@@ -20,6 +20,8 @@ public class SistemaDeComprasAterrizar {
 	
 	ArrayList<AerolineaAdapter> aerolineas;
 	
+	private ArrayList<Filtro> filtros;
+	
 	public static SistemaDeComprasAterrizar getInstance(){
 		return INSTANCE;
 	}
@@ -32,6 +34,11 @@ public class SistemaDeComprasAterrizar {
 		this.aerolineas.add(new AerolineaLanchitaAdapter());
 		this.ComprasHistoricas = new ArrayList<Asiento>();
 		this.sobreReservaObserver = new SobreReservaObserver();
+		filtros = new ArrayList<Filtro>();
+		filtros.add(new FiltroClase());
+		filtros.add(new FiltroPrecios());
+		filtros.add(new FiltroReservados());
+		filtros.add(new FiltroUbicacion());
 		
 	}
 	
@@ -61,24 +68,12 @@ public class SistemaDeComprasAterrizar {
 
 	public ArrayList<Asiento> filtrarAsientos(ArrayList<Asiento> asientos, String clase, String ubicacion, Float precioMin, 
 							Float precioMax,Boolean conReservados) {
+		
 		ArrayList<Asiento> asientosFiltrados = new ArrayList<Asiento>();
-		for(Asiento asientoAct: asientos){
-			
-			if( (clase.contains(asientoAct.getClase()) ||  clase == ""  )&&
-				(precioMin <= asientoAct.getPrecio() ) &&
-				(precioMax >= asientoAct.getPrecio() || precioMax == 0)&&
-				(ubicacion == asientoAct.getUbicacion() || ubicacion == "" ) ){
-				
-				if(conReservados){
-					asientosFiltrados.add(asientoAct);
-				}else{
-					if(!asientoAct.getEstado().equals("R")){
-						asientosFiltrados.add(asientoAct);
-					}
-				}
-				
-			}
-			
+		asientosFiltrados.addAll(asientos);
+		
+		for(Filtro unFiltro: filtros){
+			asientosFiltrados = unFiltro.filtrar(asientosFiltrados, clase, ubicacion, precioMin, precioMax, conReservados);
 		}
 		return asientosFiltrados;
 	}
