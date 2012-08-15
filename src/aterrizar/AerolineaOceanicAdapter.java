@@ -49,33 +49,15 @@ public class AerolineaOceanicAdapter implements AerolineaAdapter {
 			else
 				reservacion = "D";
 			String claseAsiento = "";
-			switch (unAsiento.getClase()) {
-			case "Ejecutiva":
-				claseAsiento = "E";
-				break;
-			case "Primera":
-				claseAsiento = "P";
-				break;
-			case "Turista":
-				claseAsiento = "T";
-				break;
-			default:
-				break;
-			}
+			if(unAsiento.getClase() == "Ejecutiva"){claseAsiento = "E";}
+			else if(unAsiento.getClase() == "Primera"){claseAsiento = "P";}
+			else if(unAsiento.getClase() == "Turista"){claseAsiento = "T";}
+			
 			String ubicacionAsiento = "";
-			switch (unAsiento.getClase()) {
-			case "Pasillo":
-				ubicacionAsiento = "P";
-				break;
-			case "Ventana":
-				ubicacionAsiento = "V";
-				break;
-			case "Centro":
-				ubicacionAsiento = "C";
-				break;
-			default:
-				break;
-			}
+			if(unAsiento.getClase() == "Pasillo"){claseAsiento = "P";}
+			else if(unAsiento.getClase() == "Ventana"){claseAsiento = "V";}
+			else if(unAsiento.getClase() == "Centro"){claseAsiento = "C";}
+			
 			Integer num1, num2;
 			String[] partido = unAsiento.getHoraDeLlegada().split(":");
 			num1 = Integer.parseInt(partido[0]);
