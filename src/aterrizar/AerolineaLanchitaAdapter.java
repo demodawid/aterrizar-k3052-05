@@ -1,6 +1,7 @@
 package aterrizar;
 
 import com.lanchita.*;
+import com.lanchita.excepciones.LanchitaException;
 //import java.util.List;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -58,5 +59,14 @@ public class AerolineaLanchitaAdapter implements AerolineaAdapter {
 	public void miAerolinea(AerolineaLanchita unaAero){
 		this.lanchita = unaAero;
 	}
-	
+
+	@Override
+	public void reservar(Asiento unAsiento, Usuario unUsuario) {
+		try{
+			lanchita.reservar(unAsiento.getCodigo(), unUsuario.dni);
+		}
+		catch(LanchitaException e){
+			throw new NoPuedeReservarException();
+		}	
+	}
 }

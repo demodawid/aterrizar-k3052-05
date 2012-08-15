@@ -60,6 +60,11 @@ public class UsuarioEstandar extends Usuario {
 		return this.nivelImportancia;
 	}
 	public void reservar(Asiento unAsiento){
-		//TODO
+		aterrizar.reservar(unAsiento, this);
+	}
+	
+	@Override
+	public void comprarReserva(Asiento unAsiento){
+		aterrizar.comprarReserva(unAsiento, this);
 	}
 }

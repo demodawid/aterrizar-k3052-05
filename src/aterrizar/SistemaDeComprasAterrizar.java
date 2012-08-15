@@ -16,6 +16,8 @@ public class SistemaDeComprasAterrizar {
 	
 	private ArrayList<Asiento> ComprasHistoricas; 
 	
+	private SobreReservaObserver sobreReservaObserver;
+	
 	ArrayList<AerolineaAdapter> aerolineas;
 	
 	public static SistemaDeComprasAterrizar getInstance(){
@@ -29,6 +31,7 @@ public class SistemaDeComprasAterrizar {
 		this.aerolineas = new ArrayList<AerolineaAdapter>();
 		this.aerolineas.add(new AerolineaLanchitaAdapter());
 		this.ComprasHistoricas = new ArrayList<Asiento>();
+		this.sobreReservaObserver = new SobreReservaObserver();
 		
 	}
 	
@@ -81,6 +84,7 @@ public class SistemaDeComprasAterrizar {
 	}
 
 	public void comprar(Asiento unAsiento, Usuario unUsuario) {
+		sobreReservaObserver.chequearSobreReservas(unAsiento);
 		unAsiento.getAerolinea().comprar(unAsiento, unUsuario);
 		ComprasHistoricas.add(unAsiento);
 				
@@ -105,4 +109,21 @@ public class SistemaDeComprasAterrizar {
 		return asientos;
 	}
 	
+	public void reservar(Asiento unAsiento, Usuario unUsuario){
+		sobreReservaObserver.chequearSobreReservas(unAsiento);
+		
+		if(sobreReservaObserver.estaSobreReservado(unAsiento)){
+			throw new NoPuedeReservarException();
+		}else{
+			try{
+				unAsiento.getAerolinea().reservar(unAsiento, unUsuario);
+			}catch(NoPuedeReservarException e){
+				sobreReservaObserver.sobreReservar(unUsuario, unAsiento);
+			}
+		}
+	}
+	
+	public void comprarReserva(Asiento unAsiento, UsuarioEstandar usuarioEstandar){
+		sobreReservaObserver.usuarioCompraSobreReserva(unAsiento, usuarioEstandar);
+	}
 }

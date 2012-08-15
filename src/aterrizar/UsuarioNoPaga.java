@@ -21,4 +21,9 @@ public class UsuarioNoPaga extends Usuario {
 		throw new UsuarioNoAutorizadoException();
 	}
 
+	@Override
+	public void comprarReserva(Asiento unAsiento) {
+		throw new UsuarioNoAutorizadoException();
+	}
+
 }
