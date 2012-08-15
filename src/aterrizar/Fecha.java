@@ -66,4 +66,26 @@ public class Fecha {
 		
 		return "" + this.anios + this.meses + this.dias;
 	}
+	public String comoStringCopado(){
+		if(this.anios == 0 || this.meses == 0 || this.dias == 0){
+			throw new FechaInvalidaException();
+		}
+		String aniosStr = anios.toString();
+		String mesesStr = "";
+		String diasStr = "";
+		if(meses < 10){
+			mesesStr = mesesStr + "0" + meses;
+		}else{
+			mesesStr = mesesStr + meses;
+		}
+		
+		if(dias < 10){
+			diasStr = diasStr + "0" + dias;
+		}else{
+			diasStr = diasStr + dias;
+		}
+		
+		return diasStr + "/" + mesesStr + "/" + aniosStr;
+		
+	}
 }
