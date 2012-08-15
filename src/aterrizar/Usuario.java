@@ -41,7 +41,7 @@ public abstract class Usuario {
 											Float precioMin, Float precioMax, Boolean conReservados, Criterio unCriterio,
 											Boolean conEscalas){
 		ArrayList<Asiento> busquedaActual = this.aterrizar.buscarAsientos(origen, destino, fecha, clase, ubicacion, precioMin, 
-																		precioMax, conReservados, unCriterio, this);
+																		precioMax, conReservados, unCriterio, conEscalas, this);
 		busquedasHistoricas.addAll(busquedaActual);
 		return busquedaActual;
 	}

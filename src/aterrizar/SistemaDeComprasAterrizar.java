@@ -93,5 +93,16 @@ public class SistemaDeComprasAterrizar {
 		}
 		return cant;
 	}
+
+	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha salida, String clase, String ubicacion,
+											Float precioMin, Float precioMax, Boolean conReservados, Criterio uncriterio, Boolean conEscala, Usuario usuario) {
+		
+		ArrayList<Asiento> asientos = this.buscarAsientos(origen, destino, salida, clase, ubicacion, precioMin, precioMax, conReservados, uncriterio, usuario);
+		if(conEscala){
+			//Acá el código que agrega a la colección los que tienen escalas!
+			//asientos.add(bla);
+		}
+		return asientos;
+	}
 	
 }
