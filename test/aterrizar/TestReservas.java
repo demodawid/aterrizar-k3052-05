@@ -10,6 +10,8 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import com.lanchita.AerolineaLanchita;
+import com.lanchita.excepciones.EstadoErroneoException;
+import com.lanchita.excepciones.LanchitaException;
 
 public class TestReservas{
 	
@@ -46,7 +48,21 @@ public class TestReservas{
 		cristian = new UsuarioNoPaga("Cristian", "Rojas", "85616975", aterrizar);
 		miguel = new UsuarioNoPaga("Miguel", "Conforti", "47331649", aterrizar);
 	}
-
+	@Test
+	public void leLlegaElMensajeALaAerolineaCuandoReservo(){
+     Asiento asientoAReservar = new Asiento("Probando", (float)100, "T","V","D",aerolineaAdapter);	
+     florencia.reservar(asientoAReservar);
+     Mockito.verify(aerolineaMock).reservar(asientoAReservar.getCodigo(),florencia.dni);
+   }
+	@Test
+	public void seRealizaSobreReservaCuandoYaEstaReservada(){
+		Asiento asientoReservado = new Asiento("Probando", (float)100, "T","V","D",aerolineaAdapter);
+		Mockito.doThrow(new NoPuedeReservarException()).when(aerolineaMock).reservar
+		(asientoReservado.getCodigo(),florencia.dni);
+		florencia.reservar(asientoReservado);
+		assertTrue(aterrizar.getObserver().estaSobreReservado(asientoReservado));
+	}		
+	
 	@Test(expected=UsuarioNoAutorizadoException.class)
 	public void siUsuarioNoPagaQuiereReservarNoPuede()throws UsuarioNoAutorizadoException{
 		Asiento asientoAReservar = new Asiento("Probando", (float)100, "T","V","D",aerolineaAdapter);
@@ -54,9 +70,12 @@ public class TestReservas{
 	}
 	
 	@Test
-	public void leLlegaElMensajeALaAerolineaCuandoReservo(){
-		Asiento asientoAReservar = new Asiento("Probando", (float)100, "T","V","D",aerolineaAdapter);
-		florencia.reservar(asientoAReservar);
-		Mockito.verify(aerolineaMock).reservar(asientoAReservar.getCodigo(),florencia.dni);
+	public void cuandoSeCompraReservaLasSobreReservasPierdenEfecto(){
+		Asiento asientoReservado = new Asiento("Probando", (float)100, "T","V","D",aerolineaAdapter);
+		Mockito.doThrow(new NoPuedeReservarException()).when(aerolineaMock).reservar
+		(asientoReservado.getCodigo(),florencia.dni);
+		florencia.reservar(asientoReservado);
+		victoria.comprarReserva(asientoReservado);
+		assertTrue(aterrizar.getObserver().estaSobreReservado(asientoReservado));
 	}
 }
