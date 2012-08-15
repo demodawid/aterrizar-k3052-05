@@ -60,13 +60,16 @@ public class SobreReservaObserver {
 	}
 
 	public void usuarioCompraSobreReserva(Asiento unAsiento, UsuarioEstandar usuarioEstandar) {
+		SobreReserva reservaAEliminar = null;
 		for(SobreReserva unaSobreReserva : sobreReservas){
 			if(unaSobreReserva.getAsiento().getCodigo().equals(unAsiento.getCodigo())){
-			sobreReservas.remove(unaSobreReserva);
+				reservaAEliminar = unaSobreReserva;
 			}
+		}
+		if(reservaAEliminar != null){
+			sobreReservas.remove(reservaAEliminar);
 		}
 		SobreReserva nuevaSobreReserva = new SobreReserva(unAsiento, usuarioEstandar);
 		sobreReservas.add(nuevaSobreReserva);
 	}
-
 }

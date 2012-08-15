@@ -121,4 +121,8 @@ public class SistemaDeComprasAterrizar {
 	public void comprarReserva(Asiento unAsiento, UsuarioEstandar usuarioEstandar){
 		sobreReservaObserver.usuarioCompraSobreReserva(unAsiento, usuarioEstandar);
 	}
+	
+	public SobreReservaObserver getObserver(){
+		return sobreReservaObserver;
+	}
 }
