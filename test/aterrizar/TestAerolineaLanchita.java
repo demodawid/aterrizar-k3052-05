@@ -31,10 +31,10 @@ public class TestAerolineaLanchita {
 		 aerolineaAdapter = new AerolineaLanchitaAdapter();
 		//Inyecto la aerolinea mock
 		 aerolineaAdapter.miAerolinea(aerolineaMock);
-		//Colección con mi aerolineaAdapter
+		//Colecciï¿½n con mi aerolineaAdapter
 		ArrayList<AerolineaAdapter> aerolineaAdapters = new ArrayList<AerolineaAdapter>();
 		aerolineaAdapters.add(aerolineaAdapter);
-		//Inyecto esta colección en el sistema de compras
+		//Inyecto esta colecciï¿½n en el sistema de compras
 		aterrizar.setAerolineas(aerolineaAdapters);
 		//Usuarios
 		demian = new UsuarioEstandar("Demian", "Dawid", "12345678", aterrizar);
@@ -48,7 +48,7 @@ public class TestAerolineaLanchita {
 	
 	@Test
 	public void leLlegaElMensajeALaAerolineaCuandoBusco(){
-		florencia.buscarAsientos("BUE", "LA", null , null);
+		florencia.buscarAsientos("BUE", "LA", null, null);
 		Mockito.verify(aerolineaMock).asientosDisponibles("BUE", "LA", null, null, null, null);
 	}
 
@@ -70,10 +70,11 @@ public class TestAerolineaLanchita {
 		String[][] asientosConSuperoferta = new String[][] {{"UnCodigoLoco","123.45","P","V","D"}};
 		Mockito.when(aerolineaMock.asientosDisponibles("BUE", null, null, null, null, null)).thenReturn(asientosConSuperoferta);
 		//Demian es un usuario VIP
-		demian.buscarAsientos("BUE", null, null, null);
+		ArrayList<Asiento> asientos = demian.buscarAsientos("BUE", null, null, null);
 		
-		ArrayList<Asiento> asientos = demian.getBusquedasHistoricas();
-		assertFalse(asientos.isEmpty());
+//		ArrayList<Busqueda> busquedas = demian.getBusquedasHistoricas();
+//		assertFalse(busquedas.isEmpty());
+//		ArrayList<Asiento> asientos = busquedas.get(0).buscar();
 		assertTrue(asientos.get(0).esSuperOferta());
 	}
 	
@@ -84,9 +85,9 @@ public class TestAerolineaLanchita {
 		String[][] asientosConSuperoferta = new String[][] {{"UnCodigoLoco","123.45","P","V","D"}};
 		Mockito.when(aerolineaMock.asientosDisponibles("BUE", null, null, null, null, null)).thenReturn(asientosConSuperoferta);
 		//Florencia no es vip y Miguel no paga
-		florencia.buscarAsientos("BUE", null, null, null);
+		asientos = florencia.buscarAsientos("BUE", null, null, null);
 		
-		asientos = florencia.getBusquedasHistoricas();
+//		asientos = florencia.getBusquedasHistoricas();
 		assertTrue(asientos.isEmpty());
 	}
 	
@@ -107,7 +108,7 @@ public class TestAerolineaLanchita {
 		
 		florencia.comprar(unAsiento);
 		
-		//Su nivel de importancia cambió a VIP
+		//Su nivel de importancia cambiï¿½ a VIP
 		assertEquals(florencia.getNivelImportancia().getClass(), NivelVip.class);
 	}
 }

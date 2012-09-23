@@ -9,30 +9,33 @@ public abstract class Usuario {
 	protected String apellido;
 	protected String dni;
 	protected SistemaDeComprasAterrizar aterrizar;
-	protected ArrayList<Asiento> busquedasHistoricas;
+	protected ArrayList<Busqueda> busquedasHistoricas;
+	protected ArrayList<Asiento> asientosHistoricos;
 	
 	protected Usuario(String nombre, String apellido, String dni, SistemaDeComprasAterrizar aterrizar){
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
 		this.aterrizar = aterrizar; //Puede cambiar cuando hayan mas aerolineas!
-		this.busquedasHistoricas = new ArrayList<Asiento>();
+		this.busquedasHistoricas = new ArrayList<Busqueda>();
+		this.asientosHistoricos = new ArrayList<Asiento>();
 	}
 	
 	/**
-	 * Método viejo, NO UTILIZAR!
+	 * Mï¿½todo viejo, NO UTILIZAR!
 	 */
 	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha salida, Fecha llegada){
-		ArrayList<Asiento> busquedaActual = this.aterrizar.buscarAsientos(origen, destino, new Fecha(0,0,0), "PET", "",
+		
+		ArrayList<Asiento> asientos = this.aterrizar.buscarAsientos(origen, destino, new Fecha(0,0,0), "PET", "",
 															(float)0, (float)0, false, new SinOrden(), this);
-		busquedasHistoricas.addAll(busquedaActual);
-		return busquedaActual;
+		asientosHistoricos.addAll(asientos);
+		return asientos;
 	}
 	
 	/**
 	 * Este metodo buscar es el nuevo para la entrega 3.
-	 * Parámetros obligatorios: Origen, Destino, Fecha
-	 * Parámetros opcionales: clase, ubicación, (si no se usa: "")
+	 * Parï¿½metros obligatorios: Origen, Destino, Fecha
+	 * Parï¿½metros opcionales: clase, ubicaciï¿½n, (si no se usa: "")
 	 * 						  precioMin, precioMax (si no se usa: 0)
 	 * 						  conReservados (si no se usa: true)
 	 * 						  unCriterio	(si no se usa: new SinOrden() )
@@ -40,10 +43,12 @@ public abstract class Usuario {
 	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha fecha, String clase, String ubicacion,
 											Float precioMin, Float precioMax, Boolean conReservados, Criterio unCriterio,
 											Boolean conEscalas){
-		ArrayList<Asiento> busquedaActual = this.aterrizar.buscarAsientos(origen, destino, fecha, clase, ubicacion, precioMin, 
-																		precioMax, conReservados, unCriterio, conEscalas, this);
-		busquedasHistoricas.addAll(busquedaActual);
-		return busquedaActual;
+//		ArrayList<Asiento> busquedaActual = this.aterrizar.buscarAsientos(origen, destino, fecha, clase, ubicacion, precioMin, 
+//																		precioMax, conReservados, unCriterio, conEscalas, this);
+		Busqueda busquedaActual = new Busqueda(origen, destino, fecha, clase, ubicacion, precioMin, 
+								precioMax, conReservados, unCriterio, conEscalas, this);
+		busquedasHistoricas.add(busquedaActual);
+		return busquedaActual.buscar();
 	}
 	
 	public void comprar(Asiento unAsiento){

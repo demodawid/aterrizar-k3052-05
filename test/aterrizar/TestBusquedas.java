@@ -30,10 +30,10 @@ public class TestBusquedas {
 		 aerolineaAdapter = new AerolineaLanchitaAdapter();
 		//Inyecto la aerolinea mock
 		 aerolineaAdapter.miAerolinea(aerolineaMock);
-		//Colección con mi aerolineaAdapter
+		//Colecciï¿½n con mi aerolineaAdapter
 		ArrayList<AerolineaAdapter> aerolineaAdapters = new ArrayList<AerolineaAdapter>();
 		aerolineaAdapters.add(aerolineaAdapter);
-		//Inyecto esta colección en el sistema de compras
+		//Inyecto esta colecciï¿½n en el sistema de compras
 		aterrizar.setAerolineas(aerolineaAdapters);
 		//Usuarios
 		demian = new UsuarioEstandar("Demian", "Dawid", "12345678", aterrizar);
@@ -56,10 +56,9 @@ public class TestBusquedas {
 														{"ABC-123","123.45","E","V","D"},
 														{"ABC-123","123.45","P","V","D"}};
 		Mockito.when(aerolineaMock.asientosDisponibles("BUE", "LA", null, null, null, null)).thenReturn(asientosADevolver);
-		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "P", "", (float)0 , (float)1000, true, new SinOrden(), false);
+		ArrayList<Asiento> asientos = demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "P", "", (float)0 , (float)1000, true, new SinOrden(), false);
 		
-		ArrayList<Asiento> asientos = demian.getBusquedasHistoricas();
-		//Deberían verse solo los 3 asientos que son de primera
+		//Deberï¿½an verse solo los 3 asientos que son de primera
 		for(Asiento unAsiento: asientos){
 			assertTrue(unAsiento.getClase() == "P");
 		}
@@ -77,10 +76,9 @@ public class TestBusquedas {
 														{"ABC-123","123.45","E","V","D"},
 														{"ABC-123","123.45","P","V","D"}};
 		Mockito.when(aerolineaMock.asientosDisponibles("BUE", "LA", null, null, null, null)).thenReturn(asientosADevolver);
-		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PE", "", (float)0 , (float)1000, true, new SinOrden(), false);
+		ArrayList<Asiento> asientos = demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PE", "", (float)0 , (float)1000, true, new SinOrden(), false);
 		
-		ArrayList<Asiento> asientos = demian.getBusquedasHistoricas();
-		//Deberían verse asientos de primera y ejecutiva
+		//Deberï¿½an verse asientos de primera y ejecutiva
 		for(Asiento unAsiento: asientos){
 			assertTrue( (unAsiento.getClase() == "P") || (unAsiento.getClase() == "E") );
 		}
@@ -96,10 +94,9 @@ public class TestBusquedas {
 														{"ABC-123","2.5","E","V","D"},
 														{"ABC-123","100.00","P","V","D"}};
 		Mockito.when(aerolineaMock.asientosDisponibles("BUE", "LA", null, null, null, null)).thenReturn(asientosADevolver);
-		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new SinOrden(), false);
+		ArrayList<Asiento> asientos = demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new SinOrden(), false);
 		
-		ArrayList<Asiento> asientos = demian.getBusquedasHistoricas();
-		//Deberían verse solo asientos en el rango de $0 a $600
+		//Deberï¿½an verse solo asientos en el rango de $0 a $600
 		for(Asiento unAsiento: asientos){
 			assertTrue( (unAsiento.getPrecio() >= 0) && (unAsiento.getPrecio() <= 600) );
 		}
@@ -115,10 +112,9 @@ public class TestBusquedas {
 														{"ABC-123","2.5","E","V","D"},
 														{"ABC-123","100.00","P","V","D"}};
 		Mockito.when(aerolineaMock.asientosDisponibles("BUE", "LA", null, null, null, null)).thenReturn(asientosADevolver);
-		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new PrecioDescendente(), false);
+		ArrayList<Asiento> asientos = demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new PrecioDescendente(), false);
 		
-		ArrayList<Asiento> asientos = demian.getBusquedasHistoricas();
-		//Los asientos deberían estar ordenados por orden descendente de precio
+		//Los asientos deberï¿½an estar ordenados por orden descendente de precio
 		int veces = 0;
 		Float anterior = (float)0;
 		for(Asiento unAsiento: asientos){
@@ -143,10 +139,9 @@ public class TestBusquedas {
 														{"ABC-123","2.5","E","V","D"},
 														{"ABC-123","100.00","P","V","D"}};
 		Mockito.when(aerolineaMock.asientosDisponibles("BUE", "LA", null, null, null, null)).thenReturn(asientosADevolver);
-		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new PrecioAscendente(),false);
+		ArrayList<Asiento> asientos = demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new PrecioAscendente(),false);
 		
-		ArrayList<Asiento> asientos = demian.getBusquedasHistoricas();
-		//Los asientos deberían estar ordenados por orden descendente de precio
+		//Los asientos deberï¿½an estar ordenados por orden descendente de precio
 		int veces = 0;
 		Float anterior = (float)0;
 		for(Asiento unAsiento: asientos){
@@ -171,14 +166,14 @@ public class TestBusquedas {
 														{"ABC-123","100.00","P","V","D"}};
 		Mockito.when(aerolineaMock.asientosDisponibles("BUE", "LA", null, null, null, null)).thenReturn(asientosADevolver);
 		//Busco Descendente
-		demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new PrecioDescendente(),false);
-		//Compro el primero, que debería ser el mas caro, de vuelo "CARO":  
-		demian.comprar(demian.getBusquedasHistoricas().get(0));
+		ArrayList<Asiento> asientos = demian.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new PrecioDescendente(),false);
+		//Compro el primero, que deberï¿½a ser el mas caro, de vuelo "CARO":  
+		demian.comprar(asientos.get(0));
 		//Ahora el vuelo "CARO" es el mas popular!
 		//Busca florencia por orden de popularidad:
-		florencia.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new Popularidad(),false);
-		//El primero debería ser el otro del vuelo "CARO"
-		String vuelo = florencia.getBusquedasHistoricas().get(0).vuelo();
+		asientos = florencia.buscarAsientos("BUE", "LA", new Fecha(0,0,0), "PTE", "", (float)0 , (float)600, true, new Popularidad(),false);
+		//El primero deberï¿½a ser el otro del vuelo "CARO"
+		String vuelo = asientos.get(0).vuelo();
 		assertTrue(vuelo.equals("CARO"));
 	}
 

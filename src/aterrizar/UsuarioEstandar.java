@@ -48,7 +48,7 @@ public class UsuarioEstandar extends Usuario {
 			this.nivelImportancia = new NivelVip();
 	}
 	
-	public ArrayList<Asiento> getBusquedasHistoricas(){
+	public ArrayList<Busqueda> getBusquedasHistoricas(){
 		return this.busquedasHistoricas;
 	}
 	

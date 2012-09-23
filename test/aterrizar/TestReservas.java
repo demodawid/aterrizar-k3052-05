@@ -34,10 +34,10 @@ public class TestReservas{
 		 aerolineaAdapter = new AerolineaLanchitaAdapter();
 		//Inyecto la aerolinea mock
 		 aerolineaAdapter.miAerolinea(aerolineaMock);
-		//Colección con mi aerolineaAdapter
+		//Colecciï¿½n con mi aerolineaAdapter
 		ArrayList<AerolineaAdapter> aerolineaAdapters = new ArrayList<AerolineaAdapter>();
 		aerolineaAdapters.add(aerolineaAdapter);
-		//Inyecto esta colección en el sistema de compras
+		//Inyecto esta colecciï¿½n en el sistema de compras
 		aterrizar.setAerolineas(aerolineaAdapters);
 		//Usuarios
 		demian = new UsuarioEstandar("Demian", "Dawid", "12345678", aterrizar);
