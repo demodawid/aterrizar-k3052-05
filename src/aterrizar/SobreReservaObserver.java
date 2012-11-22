@@ -16,7 +16,7 @@ public class SobreReservaObserver {
 				unAsiento.getAerolinea().reservar(unAsiento, this.quienSobreReservo(unAsiento));
 				//Si llega hasta aca la aerolinea ya dio de baja la reserva anterior por vencimiento
 				for(SobreReserva unaSobreReserva : sobreReservas){
-					if(unaSobreReserva.getAsiento().getCodigo().equals(unAsiento.getCodigo())){
+					if(unaSobreReserva.getAsiento().getCodigoDeVuelo().equals(unAsiento.getCodigoDeVuelo())){
 						sobreReservas.remove(unaSobreReserva);
 					}
 				}
@@ -29,7 +29,7 @@ public class SobreReservaObserver {
 
 	private Usuario quienSobreReservo(Asiento unAsiento) {
 		for(SobreReserva unaSobreReserva : sobreReservas){
-			if(unaSobreReserva.getAsiento().getCodigo().equals(unAsiento.getCodigo())){
+			if(unaSobreReserva.getAsiento().getCodigoDeVuelo().equals(unAsiento.getCodigoDeVuelo())){
 				return unaSobreReserva.getUsuario();
 			}
 		}
@@ -38,7 +38,7 @@ public class SobreReservaObserver {
 
 	public boolean estaSobreReservado(Asiento unAsiento) {
 		for(SobreReserva unaSobreReserva : sobreReservas){
-			if(unaSobreReserva.getAsiento().getCodigo().equals(unAsiento.getCodigo())){
+			if(unaSobreReserva.getAsiento().getCodigoDeVuelo().equals(unAsiento.getCodigoDeVuelo())){
 				return true;
 			}
 		}
@@ -47,7 +47,7 @@ public class SobreReservaObserver {
 
 	public void sobreReservar(Usuario unUsuario, Asiento unAsiento) {
 		for(SobreReserva unaSobreReserva : sobreReservas){
-			if(unaSobreReserva.getAsiento().getCodigo().equals(unAsiento.getCodigo())){
+			if(unaSobreReserva.getAsiento().getCodigoDeVuelo().equals(unAsiento.getCodigoDeVuelo())){
 				if(!(unaSobreReserva.getUsuario()==unUsuario)){
 					throw new NoPuedeReservarException();
 				} else  {
@@ -62,7 +62,7 @@ public class SobreReservaObserver {
 	public void usuarioCompraSobreReserva(Asiento unAsiento, UsuarioEstandar usuarioEstandar) {
 		SobreReserva reservaAEliminar = null;
 		for(SobreReserva unaSobreReserva : sobreReservas){
-			if(unaSobreReserva.getAsiento().getCodigo().equals(unAsiento.getCodigo())){
+			if(unaSobreReserva.getAsiento().getCodigoDeVuelo().equals(unAsiento.getCodigoDeVuelo())){
 				reservaAEliminar = unaSobreReserva;
 			}
 		}

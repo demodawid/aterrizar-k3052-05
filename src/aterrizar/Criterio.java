@@ -1,6 +1,5 @@
 package aterrizar;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 
 public abstract class Criterio implements Comparator<Asiento> {

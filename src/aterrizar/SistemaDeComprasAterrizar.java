@@ -1,128 +1,148 @@
 package aterrizar;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Calendar;
+import java.util.List;
 
-/**
- * Sistema de compras Aterrizar. Aquï¿½ se agregarï¿½n las nuevas aerolï¿½neas con las
- * que se firme contrato. Esta clase se encargarï¿½ de interactuar con todas las 
- * aerolï¿½neas de forma adecuada. El usuario interactï¿½a solo con este facade
- * de nuestro sistema, y la comunicacion con las aerolï¿½neas es transparente para el.
- * Deberï¿½a existir solo una implementaciï¿½n de esta clase.
- *
- */
-public class SistemaDeComprasAterrizar {
-	private static final SistemaDeComprasAterrizar INSTANCE = new SistemaDeComprasAterrizar();
+import aterrizar.Flexible;
+import aterrizar.AerolineaLanchitaAdapter;
+import aterrizar.AerolineaAdapter;
+import aterrizar.Asiento;
+import aterrizar.Hora;
+import aterrizar.Usuario;
+import aterrizar.AerolineaOceanicAdapter;
+import aterrizar.Filtrar;
+import aterrizar.Ordenar;
+import aterrizar.Viaje;
+import org.uqbar.commons.utils.Observable;
+
+import uqbar.arena.persistence.PersistentHome;
+
+@Observable
+public class SistemaDeComprasAterrizar extends PersistentHome<Asiento> implements Serializable  {
 	
-	private ArrayList<Asiento> ComprasHistoricas; 
-	
-	private SobreReservaObserver sobreReservaObserver;
+	private static SistemaDeComprasAterrizar uniqueInstance;
 	
 	ArrayList<AerolineaAdapter> aerolineas;
 	
-	private ArrayList<Filtro> filtros;
-	
-	public static SistemaDeComprasAterrizar getInstance(){
-		return INSTANCE;
-	}
-	
-	/**
-	 * Constructor
-	 */
-	private SistemaDeComprasAterrizar(){
-		this.aerolineas = new ArrayList<AerolineaAdapter>();
-		this.aerolineas.add(new AerolineaLanchitaAdapter());
-		this.ComprasHistoricas = new ArrayList<Asiento>();
-		this.sobreReservaObserver = new SobreReservaObserver();
-		filtros = new ArrayList<Filtro>();
-		filtros.add(new FiltroClase());
-		filtros.add(new FiltroPrecios());
-		filtros.add(new FiltroReservados());
-		filtros.add(new FiltroUbicacion());
+	public AerolineaLanchitaAdapter getAerolineas(){
+		AerolineaLanchitaAdapter aerolinea = new AerolineaLanchitaAdapter();
+		return aerolinea;
 		
 	}
 	
-	public void setAerolineas(ArrayList<AerolineaAdapter> aerolineas){
+	
+	private SistemaDeComprasAterrizar()
+	{
+		this.aerolineas = new ArrayList<AerolineaAdapter>();
+		this.aerolineas.add(new AerolineaLanchitaAdapter());
+		this.aerolineas.add(new AerolineaOceanicAdapter());
+	}
+	
+	public void setAerolineas(ArrayList<AerolineaAdapter> aerolineas)
+	{
 		this.aerolineas = aerolineas;
 	}
 	
-	/**
-	 * Busca asientos en todas las aerolineas que conoce para un determinado usuario,
-	 * con origen, destino, fecha de salida y fecha de llegada.
-	 */
-	
-	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha salida, String clase, String ubicacion,
-											Float precioMin, Float precioMax, Boolean conReservados, Criterio uncriterio, Usuario usuario) {
-		
-		ArrayList<Asiento> asientos = new ArrayList<Asiento>();
-		for(AerolineaAdapter unaAerolinea: aerolineas){
-			ArrayList<Asiento> asientosAct = unaAerolinea.buscarAsientos(origen, destino, salida, new Fecha(0,0,0), usuario);
-			asientosAct = this.filtrarAsientos(asientosAct,clase, ubicacion, precioMin, precioMax, conReservados);
-			asientos.addAll(asientosAct);
-		}
-		//Aca el ordenamiento
-		Collections.sort(asientos, uncriterio);
-		return asientos;
+    public static synchronized SistemaDeComprasAterrizar getInstance() {
+        if (uniqueInstance == null) 
+        {
+            uniqueInstance = new SistemaDeComprasAterrizar();
+        }
+        return uniqueInstance;
+    }
+	///////VEERRR
+    public void create(Asiento asiento) {
+		super.create(asiento);
+	}
+    
+    public List<Asiento> search(String fechaSal,int numero, String codigoDeVuelo, Float precio, String clase, String ubicacion,AerolineaAdapter aerolinea) {
+		Asiento example = new Asiento(fechaSal, numero, codigoDeVuelo, precio, clase, ubicacion, aerolinea);
+		return this.searchByExample(example);
 	}
 
-
-	public ArrayList<Asiento> filtrarAsientos(ArrayList<Asiento> asientos, String clase, String ubicacion, Float precioMin, 
-							Float precioMax,Boolean conReservados) {
-		
-		ArrayList<Asiento> asientosFiltrados = new ArrayList<Asiento>();
-		asientosFiltrados.addAll(asientos);
-		
-		for(Filtro unFiltro: filtros){
-			asientosFiltrados = unFiltro.filtrar(asientosFiltrados, clase, ubicacion, precioMin, precioMax, conReservados);
-		}
-		return asientosFiltrados;
+	@Override
+	public Class<Asiento> getEntityType() {
+		return Asiento.class;
 	}
 
-	public void comprar(Asiento unAsiento, Usuario unUsuario) {
-		sobreReservaObserver.chequearSobreReservas(unAsiento);
-		unAsiento.getAerolinea().comprar(unAsiento, unUsuario);
-		ComprasHistoricas.add(unAsiento);
-				
+	@Override
+	public Asiento createExample() {
+		return new Asiento();
 	}
-	public int popularidad(String unVuelo){
-		int cant = 0;
-		for(Asiento unAsiento: ComprasHistoricas){
-			if(unAsiento.vuelo() == unVuelo)
-				cant++;
-		}
-		return cant;
-	}
+    
+	public ArrayList<Viaje> buscarAsientos(String origen, String destino, String salida, String horaSalida, String llegada, String horaLlegada,Integer cantEscalas, Usuario usuario,Ordenar ordenar, Filtrar filtros) throws Exception
+	{
+			Flexible fechaFlexS = new Flexible(salida);
+			Flexible fechaFlexLL = new Flexible(llegada);
+			String fechaSalida;
+			String fechaLlegada;
+			
 
-	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha salida, String clase, String ubicacion,
-											Float precioMin, Float precioMax, Boolean conReservados, Criterio uncriterio, Boolean conEscala, Usuario usuario) {
-		
-		ArrayList<Asiento> asientos = this.buscarAsientos(origen, destino, salida, clase, ubicacion, precioMin, precioMax, conReservados, uncriterio, usuario);
-		if(conEscala){
-			//Acá el código que agrega a la colección los que tienen escalas!
-			//asientos.add(bla);
-		}
-		return asientos;
-	}
-	
-	public void reservar(Asiento unAsiento, Usuario unUsuario){
-		sobreReservaObserver.chequearSobreReservas(unAsiento);
-		
-		if(sobreReservaObserver.estaSobreReservado(unAsiento)){
-			throw new NoPuedeReservarException();
-		}else{
-			try{
-				unAsiento.getAerolinea().reservar(unAsiento, unUsuario);
-			}catch(NoPuedeReservarException e){
-				sobreReservaObserver.sobreReservar(unUsuario, unAsiento);
+			if(fechaFlexLL.getFecha() == null)
+			{
+				fechaLlegada = null;
 			}
-		}
+			else
+			{
+				fechaLlegada = (String.format("%02d", (fechaFlexLL.getFecha().get(Calendar.DAY_OF_MONTH))) + "/" + (String.format("%02d",(fechaFlexLL.getFecha().get(Calendar.MONTH)+1))) + "/" + Integer.toString((fechaFlexLL.getFecha().get(Calendar.YEAR))));
+			}
+			
+			
+			if(fechaFlexS.getFecha() == null)
+			{
+				fechaSalida = null;
+			}
+			else
+			{
+				fechaSalida = (String.format("%02d",(fechaFlexS.getFecha().get(Calendar.DAY_OF_MONTH))) +"/"+ (String.format("%02d",(fechaFlexS.getFecha().get(Calendar.MONTH)+1))) + "/" + Integer.toString((fechaFlexS.getFecha().get(Calendar.YEAR))));
+			}
+			
+				
+	     	Hora tipoHoraS = new Hora(horaSalida);
+			Hora tipoHoraLl = new Hora(horaLlegada);
+			String horaS = tipoHoraS.hora;
+			String horaLl = tipoHoraLl.hora;
+			
+			ArrayList<Viaje> viajes = new ArrayList<Viaje>();
+			for(AerolineaAdapter unaAerolinea: aerolineas)
+			{
+				if(unaAerolinea.buscarAsientos(origen, destino, fechaSalida , horaS, fechaLlegada, horaLl, cantEscalas, usuario)!=null)
+					viajes.addAll(unaAerolinea.buscarAsientos(origen, destino, fechaSalida , horaS, fechaLlegada, horaLl, cantEscalas, usuario));
+			}
+			
+			if(filtros != null)
+				viajes = filtros.aplicarFiltros(viajes);
+			
+			if(ordenar != null)
+				viajes = ordenar.ordenarLista(viajes);
+
+			return viajes;
+	}
+			
+	public AerolineaAdapter getLanchita() {
+		return aerolineas.get(0);
 	}
 	
-	public void comprarReserva(Asiento unAsiento, UsuarioEstandar usuarioEstandar){
-		sobreReservaObserver.usuarioCompraSobreReserva(unAsiento, usuarioEstandar);
+	public AerolineaAdapter getOceanic() {
+		return aerolineas.get(1);
 	}
 	
-	public SobreReservaObserver getObserver(){
-		return sobreReservaObserver;
+	public float comprar(Asiento asiento, Usuario usuario) throws Exception
+	{
+		asiento.getAerolinea().comprar(asiento, usuario);
+		float precioTotal = (asiento.getPrecio()*((asiento.getAerolinea().getPorcentajeImpuesto()/100) + 1)) + usuario.impuestoAdicional();
+	
+		return precioTotal;
 	}
+	
+	public void reservar(Asiento asiento, Usuario usuario) {
+		asiento.getAerolinea().reservar(asiento,usuario);
+	}
+
+	public void sobreReservar(Asiento asiento, Usuario usuario) {
+		asiento.getAerolinea().sobreReservar(asiento,usuario);		
+	}
+
 }

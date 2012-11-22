@@ -1,44 +1,71 @@
 package aterrizar;
 
-import java.util.List;
-import java.util.ArrayList;
+import aterrizar.FechaInvalidaException;
+import aterrizar.ManejadorFechas;
 
-public class Flexible extends Formato{
-	private List<Formato> formatos;
-	public Flexible(){
-		super();
-		this.formatos = new ArrayList<Formato>();
-		this.formatos.add(new LatinoAmericano());
-		this.formatos.add(new NorteAmericano());
-		this.formatos.add(new ISO8601());
-	}
+public class Flexible extends ManejadorFechas {
+
+	private int aux; 
 	
-	/**
-	 * Convierte un String en fomato LatinoAmericano, NorteAmericano, o ISO 8601
-	 * en un objeto Fecha.
-	 */
-	public Fecha convertir(String fechaStr){
-		Fecha unaFecha = new Fecha(0,0,0);
-		Boolean convertido = false;
-		for(Formato unFormato: formatos){
-			try{
-				unaFecha = unFormato.convertir(fechaStr);
-				convertido = true;
-				break;
-			}
-			catch(NumberFormatException e){
-				continue;
-			}
-			catch(StringIndexOutOfBoundsException e){
-				continue;
-			}
-			catch(NoSePuedeConvertirException e){
-				continue;
-			}
+	public Flexible (String fecha) throws Exception
+	{
+		if(fecha == null)
+		{
+
+			super.fecha = null;
+			return;
 		}
-		if (!convertido){
-			throw new NoSePuedeConvertirException();
-		}
-		return unaFecha;
+		
+		cambiarFecha(fecha);
 	}
+
+	
+	public void cambiarFecha(String fecha) throws Exception {
+		
+		aux = 0;
+		
+		try{ this.validarFecha(fecha); }
+		catch(Exception e){
+				aux = 1;
+			}
+		
+		if(aux==0){
+			parseFechas(fecha,"iso");
+		return;
+		}
+		
+		super.validarFecha(fecha);
+		
+				
+		if((fecha.charAt(2)=='/') & (fecha.charAt(5)=='/'))
+		{
+			parseFechas(fecha,"latino");
+			return;
+		}else{
+			parseFechas(fecha,"americano");
+			return;
+		}
+
+	}
+
+
+	public void validarFecha(String fecha) throws Exception {
+		
+		if (fecha.length() != 10) 
+			throw new FechaInvalidaException();
+		
+		for (int i = 0; i < fecha.length(); i++) 
+			{
+	            if(i!=4 & i!=7){
+				if (!Character.isDigit(fecha.charAt(i)))
+	            	  	throw new FechaInvalidaException();
+	            }
+	        }  
+		
+		return;
+	}
+
+
+
+
 }

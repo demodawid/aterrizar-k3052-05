@@ -10,7 +10,7 @@ public class FiltroPrecios implements Filtro {
 	
 	@Override
 	public ArrayList<Asiento> filtrar(ArrayList<Asiento> asientos,
-			String clase, String ubicacion, Float precioMin, Float precioMax,
+			String clase, String ubicacion, Double precioMin, Double precioMax,
 			Boolean conReservados) {
 		ArrayList<Asiento> asientosFinal = new ArrayList<Asiento>();
 		for(Asiento unAsiento: asientos){

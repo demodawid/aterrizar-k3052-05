@@ -1,69 +1,114 @@
 package aterrizar;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
-import com.lanchita.excepciones.*;
+import org.uqbar.commons.model.Entity;
+import org.uqbar.commons.utils.Observable;
+import org.uqbar.commons.utils.Transactional;
 
-public abstract class Usuario {
+import aterrizar.Asiento;
+import aterrizar.SistemaDeComprasAterrizar;
+import aterrizar.Filtrar;
+import aterrizar.Ordenar;
+import aterrizar.Viaje;
+
+import uqbar.arena.persistence.annotations.PersistentClass;
+import uqbar.arena.persistence.annotations.PersistentField;
+import uqbar.arena.persistence.annotations.Relation;
+
+
+@Transactional
+@Observable
+@PersistentClass
+public abstract class Usuario extends Entity{
+	
 	protected String nombre;
 	protected String apellido;
 	protected String dni;
-	protected SistemaDeComprasAterrizar aterrizar;
-	protected ArrayList<Busqueda> busquedasHistoricas;
-	protected ArrayList<Asiento> asientosHistoricos;
+	protected ArrayList<Asiento> asientosReservados = new ArrayList<Asiento>();
+	protected ArrayList<Asiento> asientosComprados = new ArrayList<Asiento>();
 	
-	protected Usuario(String nombre, String apellido, String dni, SistemaDeComprasAterrizar aterrizar){
+	
+	protected SistemaDeComprasAterrizar sistema;
+	
+	protected ArrayList<Asiento> historialDeBusquedas;
+	
+	public Usuario(){
+	}
+	
+	public Usuario(String nombre, String apellido, String dni)
+	{
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
-		this.aterrizar = aterrizar; //Puede cambiar cuando hayan mas aerolineas!
-		this.busquedasHistoricas = new ArrayList<Busqueda>();
-		this.asientosHistoricos = new ArrayList<Asiento>();
+		this.sistema = SistemaDeComprasAterrizar.getInstance();
+		this.historialDeBusquedas = new ArrayList<Asiento>();
 	}
 	
-	/**
-	 * M�todo viejo, NO UTILIZAR!
-	 */
-	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha salida, Fecha llegada){
+	public ArrayList<Viaje> buscarAsientosDisponibles(String origen, String destino, String salida, String horaSalida, String llegada, String horaLlegada,Integer cantEscalas, Ordenar orden, Filtrar filtros) throws Exception
+	{
+		ArrayList<Viaje> busqueda = this.sistema.buscarAsientos(origen, destino, salida, horaSalida, llegada, horaLlegada,cantEscalas, this,orden,filtros);
 		
-		ArrayList<Asiento> asientos = this.aterrizar.buscarAsientos(origen, destino, new Fecha(0,0,0), "PET", "",
-															(float)0, (float)0, false, new SinOrden(), this);
-		asientosHistoricos.addAll(asientos);
-		return asientos;
-	}
-	
-	/**
-	 * Este metodo buscar es el nuevo para la entrega 3.
-	 * Par�metros obligatorios: Origen, Destino, Fecha
-	 * Par�metros opcionales: clase, ubicaci�n, (si no se usa: "")
-	 * 						  precioMin, precioMax (si no se usa: 0)
-	 * 						  conReservados (si no se usa: true)
-	 * 						  unCriterio	(si no se usa: new SinOrden() )
-	 */
-	public ArrayList<Asiento> buscarAsientos(String origen, String destino, Fecha fecha, String clase, String ubicacion,
-											Float precioMin, Float precioMax, Boolean conReservados, Criterio unCriterio,
-											Boolean conEscalas){
-//		ArrayList<Asiento> busquedaActual = this.aterrizar.buscarAsientos(origen, destino, fecha, clase, ubicacion, precioMin, 
-//																		precioMax, conReservados, unCriterio, conEscalas, this);
-		Busqueda busquedaActual = new Busqueda(origen, destino, fecha, clase, ubicacion, precioMin, 
-								precioMax, conReservados, unCriterio, conEscalas, this);
-		busquedasHistoricas.add(busquedaActual);
-		return busquedaActual.buscar();
-	}
-	
-	public void comprar(Asiento unAsiento){
-		
-		try{
-			aterrizar.comprar(unAsiento, this);
-		} 
-		catch(LanchitaException e){
-			System.out.println(e.getMessage());			
+		Iterator<Viaje> viajeIterator = busqueda.iterator();
+		while(viajeIterator.hasNext())
+		{
+			Viaje viaje = viajeIterator.next();
+			
+			if(viaje.getAsientoUno()!=null)
+				this.historialDeBusquedas.add(viaje.getAsientoUno());
+			
+			if(viaje.getAsientoDos()!=null)
+				this.historialDeBusquedas.add(viaje.getAsientoDos());
+			
+			if(viaje.getAsientoTres()!=null)
+				this.historialDeBusquedas.add(viaje.getAsientoTres());
+			
 		}
-		
+		return busqueda;
+	}
+	@Relation
+	public void comprarAsiento(Asiento unAsiento) throws Exception{
+			sistema.comprar(unAsiento, this);
+			this.asientosComprados.add(unAsiento);
+	}
+	@Relation
+	public void reservarAsiento(Asiento unAsiento){
+			sistema.reservar(unAsiento, this);
+			this.asientosReservados.add(unAsiento);
+		return;
 	}
 	
-	public abstract Boolean puedeVer(Asiento unAsiento);
-	public abstract Float adicionalPrecio();
-	public abstract void reservar(Asiento unAsiento);
-	public abstract void comprarReserva(Asiento unAsiento);
+	
+	public abstract Boolean puedeListar(Asiento unAsiento);
+	public abstract float impuestoAdicional();
+
+	public String getNombre() {
+		return this.nombre;
+	}
+	@PersistentField
+	public ArrayList<Asiento> getAsientosReservados() {
+		return asientosReservados;
+	}
+	@PersistentField
+	public ArrayList<Asiento> getAsientosComprados() {
+		return asientosComprados;
+	}
+
+	public void setAsientosComprados(ArrayList<Asiento> asientosComprados) {
+		this.asientosComprados = asientosComprados;
+	}
+
+	public void setAsientosReservados(ArrayList<Asiento> asientosReservados) {
+		this.asientosReservados = asientosReservados;
+	}
+	
+	public String getDni() {
+		return dni;
+	}
+	
+	public void agregarAsiento(Asiento unAsiento){
+		this.asientosComprados.add(unAsiento);
+		this.asientosReservados.add(unAsiento);
+	}
 }

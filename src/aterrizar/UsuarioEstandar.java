@@ -1,70 +1,74 @@
 package aterrizar;
 
-import java.util.ArrayList;
+import aterrizar.Asiento;
+import aterrizar.NivelImportancia;
+import aterrizar.NivelNormal;
+import aterrizar.NivelVip;
+import aterrizar.Usuario;
 
-public class UsuarioEstandar extends Usuario {
+public class UsuarioEstandar extends Usuario{
+
+	private float gastosAcumulados;
+	private NivelImportancia nivel;
 	
-	private Float comprasTotales;
-	private NivelImportancia nivelImportancia;
 	
-	public UsuarioEstandar(String nombre, String apellido, String dni, SistemaDeComprasAterrizar aterrizar){
-		super(nombre, apellido, dni, aterrizar);
-		this.comprasTotales = (float) 0;
-		this.nivelImportancia = new NivelNormal();
+	public UsuarioEstandar(String nombre, String apellido, String dni)
+	{
+		super(nombre,apellido,dni);
+		this.gastosAcumulados = (float)0;
+		this.nivel = new NivelNormal();
 	}
 	
-	@Override
-	public void comprar(Asiento unAsiento) {
-		super.comprar(unAsiento);
-		this.registrarCompra(unAsiento);
-	}
-	
-	/**
-	 * Registra la compra (aumenta comprasTotales) y cambia de Nivel de
-	 * importancia si es necesario.
-	 */
-	private void registrarCompra(Asiento unAsiento) {
-		this.comprasTotales += unAsiento.getPrecio();
-		if(comprasTotales > 100000)
-			this.nivelImportancia = new NivelVip();
-	}
 
 	@Override
-	public Boolean puedeVer(Asiento unAsiento){
-		return this.nivelImportancia.puedeVer(unAsiento);
+	public void comprarAsiento(Asiento unAsiento) throws Exception{
+		float precioTotal = super.sistema.comprar(unAsiento, this);
+		this.registrarCompra(precioTotal);
+		this.asientosComprados.add(unAsiento);
+	}
+	
+	@Override
+	public void reservarAsiento(Asiento unAsiento){
+		super.sistema.reservar(unAsiento,this);
+		this.asientosReservados.add(unAsiento);		
+	}
+	
+	public void registrarCompra(float precioTotal)
+	{
+		this.gastosAcumulados += precioTotal;
+		
+		if(gastosAcumulados > 100000)
+			{
+				this.nivel = new NivelVip();
+			}
+		
+	}
+	
+	@Override
+	public float impuestoAdicional()
+	{
+		return (float)0;
+	}
+	
+	@Override
+	public Boolean puedeListar(Asiento unAsiento)
+	{
+		return this.nivel.puedeVer(unAsiento);
+	}
+		
+	public NivelImportancia getNivel()
+	{
+		return nivel;
+	}
+	
+	public float getGastosAcumulados()
+	{
+		return gastosAcumulados;
 	}
 
-	@Override
-	public Float adicionalPrecio() {
-		return (float) 0;
+
+	public void setNivel(NivelImportancia nivel) {
+		this.nivel = nivel;
 	}
 	
-	/**
-	 * Util para pruebas
-	 */
-	public void setComprasTotales(Float comprasTotales){
-		this.comprasTotales = comprasTotales;
-		if(this.comprasTotales > 100000)
-			this.nivelImportancia = new NivelVip();
-	}
-	
-	public ArrayList<Busqueda> getBusquedasHistoricas(){
-		return this.busquedasHistoricas;
-	}
-	
-	public Float getComprasTotales(){
-		return this.comprasTotales;
-	}
-	
-	public NivelImportancia getNivelImportancia(){
-		return this.nivelImportancia;
-	}
-	public void reservar(Asiento unAsiento){
-		aterrizar.reservar(unAsiento, this);
-	}
-	
-	@Override
-	public void comprarReserva(Asiento unAsiento){
-		aterrizar.comprarReserva(unAsiento, this);
-	}
 }

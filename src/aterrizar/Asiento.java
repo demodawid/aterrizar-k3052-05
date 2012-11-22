@@ -1,63 +1,60 @@
 package aterrizar;
 
-import java.sql.Time;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
-public class Asiento {
-	private String codigo;
+import org.uqbar.commons.utils.Observable;
+import org.uqbar.commons.model.Entity;
+import org.uqbar.commons.model.ObservableUtils;
+import org.uqbar.commons.model.UserException;
+import org.uqbar.commons.utils.Observable;
+import org.uqbar.commons.utils.Transactional;
+
+import aterrizar.Flexible;
+import aterrizar.AerolineaAdapter;
+import aterrizar.Hora;
+
+import uqbar.arena.persistence.annotations.PersistentClass;
+import uqbar.arena.persistence.annotations.PersistentField;
+import uqbar.arena.persistence.annotations.Relation;
+
+@Transactional
+@Observable
+@PersistentClass
+public class Asiento extends Entity {
+
+	private String origen;
+	private String destino;
+	private String horaLle;
+	private String horaSal;
+	private String fechaSal;
+	private String fechaLle;
+	private int numero;
+	private String codigoDeVuelo;
 	private Float precio;
 	private String clase;
 	private String ubicacion;
 	private String estado;
-	private Time horaSalida;
-	private Time horaLlegada;
-	private Fecha fecha;
-	private Fecha fechaLlegada;
+	private int[] duracion;
+
 	private AerolineaAdapter aerolinea;
-	private String origen;
-	private String destino;
 	
-	@SuppressWarnings("deprecation")
-	public Asiento(String codigo, Float precio, String clase, String ubicacion, String estado, AerolineaAdapter aerolinea){
-		super();
-		this.codigo = codigo;
+	public Asiento(String origen, String destino, String fechaSal, String fechaLle, String horaSal, String horaLle,int numero, String codigoDeVuelo, Float precio, String clase, String ubicacion, String estado, AerolineaAdapter aerolinea) throws Exception{
+		this.numero = numero;
+		this.codigoDeVuelo = codigoDeVuelo;
 		this.setPrecio(precio);
 		this.clase = clase;
 		this.ubicacion = ubicacion;
 		this.estado = estado;
 		this.aerolinea = aerolinea;
-		this.horaLlegada = new Time(0,0,0);
-		this.horaSalida = new Time(0,0,0);
-		this.fecha = new Fecha(0,0,0);
-	}
-	
-	public Asiento(String codigo, Float precio, String clase, String ubicacion, String estado, AerolineaAdapter aerolinea, Time horaLlegada, Time horaSalida, Fecha fecha){
-		super();
-		this.codigo = codigo;
-		this.setPrecio(precio);
-		this.clase = clase;
-		this.ubicacion = ubicacion;
-		this.estado = estado;
-		this.aerolinea = aerolinea;
-		this.horaLlegada = horaLlegada;
-		this.horaSalida = horaSalida;
-		this.fecha = fecha;
-	}
-	
-	public Asiento(String codigo, Float precio, String clase, String ubicacion, String estado, AerolineaAdapter aerolinea, 
-								Time horaLlegada, Time horaSalida, Fecha fecha, String origen, String destino, Fecha fechaLlegada){
-		super();
-		this.codigo = codigo;
-		this.setPrecio(precio);
-		this.clase = clase;
-		this.ubicacion = ubicacion;
-		this.estado = estado;
-		this.aerolinea = aerolinea;
-		this.horaLlegada = horaLlegada;
-		this.horaSalida = horaSalida;
-		this.fecha = fecha;
 		this.origen = origen;
 		this.destino = destino;
-		this.fechaLlegada = fechaLlegada;
+		this.horaLle = horaLle;
+		this.horaSal = horaSal;
+		this.fechaLle = fechaLle;
+		this.fechaSal = fechaSal;
+		this.duracion = calcularDuracion(fechaSal,fechaLle,horaSal,horaLle);
+
 	}
 	
 	public Boolean esSuperOferta(){
@@ -66,60 +63,96 @@ public class Asiento {
 				(this.clase == "E" && this.precio < 4000 );
 	}
 	
-	public int tiempoDeVuelo(){
-		return 0;
+	//
+	public Asiento(){
 	}
 	
-	public String vuelo(){
-		String[] temp;
-		temp = this.codigo.split("-");
-		return temp[0];
+	public Asiento(String fechaSal,int numero, String codigoDeVuelo, Float precio, String clase, String ubicacion,AerolineaAdapter aerolinea){
+		this.fechaSal = fechaSal;
+		this.numero = numero;
+		this.codigoDeVuelo = codigoDeVuelo;
+		this.precio = precio;
+		this.clase = clase;
+		this.ubicacion = ubicacion;
+		this.aerolinea = aerolinea;
+	}
+
+	public int[] calcularDuracion(String fechaSal,String fechaLle,String horaSal,String horaLle) throws Exception
+	{
+		int[] diferenciaTiempo = new int[] {0,0};
+		Flexible fechaSalidaFlex = new Flexible(fechaSal);
+		Flexible fechaLlegadaFlex = new Flexible(fechaLle);
+		Hora horaSalidaH = new Hora(horaSal);
+		Hora horaLlegadaH = new Hora(horaLle);
+		
+		GregorianCalendar salida = new GregorianCalendar();
+		GregorianCalendar llegada = new GregorianCalendar();
+		salida.set(fechaSalidaFlex.getFecha().get(Calendar.YEAR),fechaSalidaFlex.getFecha().get(Calendar.MONTH)+1,fechaSalidaFlex.getFecha().get(Calendar.DAY_OF_MONTH),horaSalidaH.horas,horaSalidaH.minutos);
+		llegada.set(fechaLlegadaFlex.getFecha().get(Calendar.YEAR),fechaLlegadaFlex.getFecha().get(Calendar.MONTH)+1,fechaLlegadaFlex.getFecha().get(Calendar.DAY_OF_MONTH),horaLlegadaH.horas,horaLlegadaH.minutos);
+		
+		long diferencia = llegada.getTime().getTime() - salida.getTime().getTime();
+		long totalMinutos = Math.round(diferencia/60000) ;
+		
+		diferenciaTiempo[0] = Math.round(totalMinutos/60);
+		diferenciaTiempo[1] = Math.round(totalMinutos%60);
+		
+		return diferenciaTiempo;
 	}
 	
-	public Boolean tieneEscala(){
-		return false;
-	}
 	
-	/**
-	 * Getters y Setters:
-	 */
-	public String getCodigo() {
-		return codigo;
+	@PersistentField
+	public int getNumero() {
+		return numero;
 	}
+	@PersistentField
+	public String getCodigoDeVuelo() {
+		return codigoDeVuelo;
+	}
+	@PersistentField
 	public String getClase() {
 		return clase;
 	}
+	@PersistentField
 	public String getUbicacion() {
 		return ubicacion;
 	}
 	public String getEstado() {
 		return estado;
 	}
+	@PersistentField
 	public Float getPrecio() {
 		return precio;
 	}
 	public void setPrecio(Float precio) {
 		this.precio = precio;
 	}
+	@PersistentField
 	public AerolineaAdapter getAerolinea() {
 		return aerolinea;
 	}
-	public String getSalida() {
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+	public String getOrigen() {
 		return origen;
 	}
-	public String getLlegada() {
+	public String getDestino() {
 		return destino;
 	}
-	public Fecha getFecha() {
-		return fecha; 
+	public String getHoraLle() {
+		return horaLle;
 	}
-	public Time getHoraLlegada() {
-		return horaLlegada;
+	public String getHoraSal() {
+		return horaSal;
 	}
-	public Time getHoraSalida() {
-		return horaSalida;
+	@PersistentField
+	public String getFechaSal() {
+		return fechaSal;
 	}
-	public Fecha getFechaLlegada() {
-		return fechaLlegada;
+	public String getFechaLle() {
+		return fechaLle;
+	}
+	public int[] getDuracion() {
+		return duracion;
 	}
 }
