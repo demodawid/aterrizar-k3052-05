@@ -13,12 +13,14 @@ import aterrizar.Filtrar;
 import aterrizar.Ordenar;
 import aterrizar.Viaje;
 
+import uqbar.arena.persistence.annotations.PersistentClass;
 import uqbar.arena.persistence.annotations.PersistentField;
 import uqbar.arena.persistence.annotations.Relation;
 
 
 @Transactional
 @Observable
+@PersistentClass
 public abstract class Usuario extends Entity{
 	
 	protected String nombre;
@@ -85,6 +87,7 @@ public abstract class Usuario extends Entity{
 	public abstract Boolean puedeListar(Asiento unAsiento);
 	public abstract float impuestoAdicional();
 
+	@PersistentField
 	public String getNombre() {
 		return this.nombre;
 	}
