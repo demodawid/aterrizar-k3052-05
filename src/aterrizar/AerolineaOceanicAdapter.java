@@ -14,7 +14,11 @@ import aterrizar.NoPuedeReservarException;
 import aterrizar.Reservas;
 import aterrizar.Viaje;
 
-public class AerolineaOceanicAdapter implements AerolineaAdapter {
+import org.uqbar.commons.model.Entity;
+import uqbar.arena.persistence.annotations.PersistentClass;
+
+@PersistentClass
+public class AerolineaOceanicAdapter extends Entity implements AerolineaAdapter {
 	
 	private AerolineaOceanic _aerolineaOceanic = AerolineaOceanic.getInstance();
 	private static Integer porcentajeImpuesto = 0;

@@ -1,8 +1,10 @@
 package aterrizar;
 
 import java.util.ArrayList;
+import uqbar.arena.persistence.annotations.PersistentClass;
 
-public interface AerolineaAdapter {
+@PersistentClass
+public interface AerolineaAdapter{
 	public void comprar(Asiento asiento, Usuario usuario) throws Exception;
 	public ArrayList<Viaje> buscarAsientos(String origen, String destino, String salida, String horaSalida, String llegada, String horaLlegada,Integer cantEscalas, Usuario usuario) throws Exception;
 	public int getPorcentajeImpuesto();

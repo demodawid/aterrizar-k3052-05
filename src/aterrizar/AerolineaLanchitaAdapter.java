@@ -1,6 +1,7 @@
 package aterrizar;
 
 import com.lanchita.*;
+
 import com.lanchita.excepciones.EstadoErroneoException;
 import aterrizar.AerolineaAdapter;
 import aterrizar.Asiento;
@@ -13,7 +14,12 @@ import aterrizar.Viaje;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class AerolineaLanchitaAdapter implements AerolineaAdapter {
+import uqbar.arena.persistence.annotations.PersistentClass;
+
+import org.uqbar.commons.model.Entity;
+
+@PersistentClass
+public class AerolineaLanchitaAdapter extends Entity implements AerolineaAdapter{
 
 	private AerolineaLanchita _aerolineaLanchita = AerolineaLanchita.getInstance();
 	private static Integer porcentajeImpuesto = 15;

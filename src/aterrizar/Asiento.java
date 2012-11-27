@@ -38,7 +38,7 @@ public class Asiento extends Entity {
 	private String estado;
 	private int[] duracion;
 
-	private AerolineaAdapter aerolinea;
+	public AerolineaAdapter aerolinea;
 	
 	public Asiento(String origen, String destino, String fechaSal, String fechaLle, String horaSal, String horaLle,int numero, String codigoDeVuelo, Float precio, String clase, String ubicacion, String estado, AerolineaAdapter aerolinea) throws Exception{
 		this.numero = numero;
@@ -127,7 +127,7 @@ public class Asiento extends Entity {
 	public void setPrecio(Float precio) {
 		this.precio = precio;
 	}
-	@PersistentField
+	@Relation
 	public AerolineaAdapter getAerolinea() {
 		return aerolinea;
 	}
