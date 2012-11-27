@@ -1,9 +1,8 @@
 package aterrizar;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Collections;
 
 import aterrizar.Flexible;
 import aterrizar.AerolineaLanchitaAdapter;
@@ -15,22 +14,12 @@ import aterrizar.AerolineaOceanicAdapter;
 import aterrizar.Filtrar;
 import aterrizar.Ordenar;
 import aterrizar.Viaje;
-import org.uqbar.commons.utils.Observable;
 
-import uqbar.arena.persistence.PersistentHome;
-
-@Observable
-public class SistemaDeComprasAterrizar extends PersistentHome<Asiento> implements Serializable  {
+public class SistemaDeComprasAterrizar {
 	
 	private static SistemaDeComprasAterrizar uniqueInstance;
 	
 	ArrayList<AerolineaAdapter> aerolineas;
-	
-	public AerolineaLanchitaAdapter getAerolineas(){
-		AerolineaLanchitaAdapter aerolinea = new AerolineaLanchitaAdapter();
-		return aerolinea;
-		
-	}
 	
 	
 	private SistemaDeComprasAterrizar()
@@ -45,33 +34,14 @@ public class SistemaDeComprasAterrizar extends PersistentHome<Asiento> implement
 		this.aerolineas = aerolineas;
 	}
 	
-    public static synchronized SistemaDeComprasAterrizar getInstance() {
+    public static SistemaDeComprasAterrizar getInstance() {
         if (uniqueInstance == null) 
         {
             uniqueInstance = new SistemaDeComprasAterrizar();
         }
         return uniqueInstance;
     }
-	///////VEERRR
-    public void create(Asiento asiento) {
-		super.create(asiento);
-	}
-    
-    public List<Asiento> search(String fechaSal,int numero, String codigoDeVuelo, Float precio, String clase, String ubicacion,AerolineaAdapter aerolinea) {
-		Asiento example = new Asiento(fechaSal, numero, codigoDeVuelo, precio, clase, ubicacion, aerolinea);
-		return this.searchByExample(example);
-	}
-
-	@Override
-	public Class<Asiento> getEntityType() {
-		return Asiento.class;
-	}
-
-	@Override
-	public Asiento createExample() {
-		return new Asiento();
-	}
-    
+	
 	public ArrayList<Viaje> buscarAsientos(String origen, String destino, String salida, String horaSalida, String llegada, String horaLlegada,Integer cantEscalas, Usuario usuario,Ordenar ordenar, Filtrar filtros) throws Exception
 	{
 			Flexible fechaFlexS = new Flexible(salida);
@@ -100,6 +70,8 @@ public class SistemaDeComprasAterrizar extends PersistentHome<Asiento> implement
 			}
 			
 				
+			/* Arreglo la hora que me llega de a cuerdo al formato de la entrega 2*/	
+			
 	     	Hora tipoHoraS = new Hora(horaSalida);
 			Hora tipoHoraLl = new Hora(horaLlegada);
 			String horaS = tipoHoraS.hora;
@@ -128,7 +100,7 @@ public class SistemaDeComprasAterrizar extends PersistentHome<Asiento> implement
 	public AerolineaAdapter getOceanic() {
 		return aerolineas.get(1);
 	}
-	
+
 	public float comprar(Asiento asiento, Usuario usuario) throws Exception
 	{
 		asiento.getAerolinea().comprar(asiento, usuario);

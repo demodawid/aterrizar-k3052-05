@@ -37,6 +37,12 @@ public abstract class Usuario extends Entity{
 	public Usuario(){
 	}
 	
+	public Usuario(String nombre, ArrayList<Asiento> reservas, ArrayList<Asiento> compras){
+		this.nombre = nombre;
+		this.asientosReservados = reservas;
+		this.asientosComprados = compras;
+	}
+	
 	public Usuario(String nombre, String apellido, String dni)
 	{
 		this.nombre = nombre;
@@ -83,6 +89,7 @@ public abstract class Usuario extends Entity{
 	public abstract Boolean puedeListar(Asiento unAsiento);
 	public abstract float impuestoAdicional();
 
+	@PersistentField
 	public String getNombre() {
 		return this.nombre;
 	}

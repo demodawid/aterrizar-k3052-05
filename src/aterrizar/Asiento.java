@@ -5,6 +5,7 @@ import java.util.GregorianCalendar;
 
 import org.uqbar.commons.utils.Observable;
 import org.uqbar.commons.model.Entity;
+import java.util.List;
 import org.uqbar.commons.model.ObservableUtils;
 import org.uqbar.commons.model.UserException;
 import org.uqbar.commons.utils.Observable;
@@ -66,7 +67,7 @@ public class Asiento extends Entity {
 	//
 	public Asiento(){
 	}
-	
+
 	public Asiento(String fechaSal,int numero, String codigoDeVuelo, Float precio, String clase, String ubicacion,AerolineaAdapter aerolinea){
 		this.fechaSal = fechaSal;
 		this.numero = numero;
