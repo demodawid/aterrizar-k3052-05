@@ -18,7 +18,6 @@ import aterrizar.Asiento;
 
 @Transactional
 @Observable
-@PersistentClass
 public class Viaje extends Entity{
         float precio;
         ArrayList<Asiento> asientos;
@@ -34,11 +33,9 @@ public class Viaje extends Entity{
                 if(asientoTres != null)
                         this.asientos.add(asientoTres);
         }
-        @PersistentField
         public float getPrecio() {
                 return this.precio;
         }
-        @Relation
         public Asiento getAsientoUno(){
                 return this.asientos.get(0);
         }

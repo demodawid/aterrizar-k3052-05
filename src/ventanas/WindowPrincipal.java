@@ -8,6 +8,7 @@ import org.uqbar.arena.widgets.Panel;
 import org.uqbar.arena.windows.Dialog;
 import org.uqbar.arena.windows.SimpleWindow;
 import org.uqbar.ui.jface.builder.ErrorsPanel;
+import uqbar.arena.persistence.Configuration;
 
 import aterrizar.Usuario;
 
@@ -15,6 +16,8 @@ import aterrizar.Usuario;
 @SuppressWarnings("serial")
 public class WindowPrincipal extends SimpleWindow<Object> {
 	Usuario usuario;
+	
+	{ Configuration.configure(); }
 	
 	@SuppressWarnings("unchecked")
 	public WindowPrincipal(AterrizarApplication sistema,Usuario usuario) {

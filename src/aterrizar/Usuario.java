@@ -13,14 +13,12 @@ import aterrizar.Filtrar;
 import aterrizar.Ordenar;
 import aterrizar.Viaje;
 
-import uqbar.arena.persistence.annotations.PersistentClass;
 import uqbar.arena.persistence.annotations.PersistentField;
 import uqbar.arena.persistence.annotations.Relation;
 
 
 @Transactional
 @Observable
-@PersistentClass
 public abstract class Usuario extends Entity{
 	
 	protected String nombre;
@@ -73,12 +71,10 @@ public abstract class Usuario extends Entity{
 		}
 		return busqueda;
 	}
-	@Relation
 	public void comprarAsiento(Asiento unAsiento) throws Exception{
 			sistema.comprar(unAsiento, this);
 			this.asientosComprados.add(unAsiento);
 	}
-	@Relation
 	public void reservarAsiento(Asiento unAsiento){
 			sistema.reservar(unAsiento, this);
 			this.asientosReservados.add(unAsiento);
@@ -89,15 +85,12 @@ public abstract class Usuario extends Entity{
 	public abstract Boolean puedeListar(Asiento unAsiento);
 	public abstract float impuestoAdicional();
 
-	@PersistentField
 	public String getNombre() {
 		return this.nombre;
 	}
-	@PersistentField
 	public ArrayList<Asiento> getAsientosReservados() {
 		return asientosReservados;
 	}
-	@PersistentField
 	public ArrayList<Asiento> getAsientosComprados() {
 		return asientosComprados;
 	}

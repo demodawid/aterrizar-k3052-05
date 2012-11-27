@@ -7,11 +7,14 @@ import aterrizar.AerolineaAdapter;
 import aterrizar.Asiento;
 import aterrizar.Usuario;
 
+import uqbar.arena.persistence.annotations.PersistentClass;
+
 import org.uqbar.commons.utils.Observable;
 
 import uqbar.arena.persistence.PersistentHome;
 
 @Observable
+@PersistentClass
 public class HomeAsiento extends PersistentHome<Asiento> implements Serializable  {
 	
 	private static HomeAsiento instance;

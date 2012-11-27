@@ -107,7 +107,6 @@ public class ReservasyComprasWindow extends TransactionalDialog<OperationModel> 
 			HomeAsiento.getInstance().update(asiento??));
 		}
 	  });*/
-	}
 				
-	
+	}
 }

@@ -1,5 +1,7 @@
 package ventanas;
 
+import homes.HomeAsiento;
+
 import java.io.Serializable;
 import java.util.List;
 import org.uqbar.commons.utils.Observable;
@@ -15,6 +17,7 @@ import aterrizar.Usuario;
 import aterrizar.NoPuedeComprarException;
 import aterrizar.NoPuedeReservarException;
 import aterrizar.Viaje;
+import uqbar.arena.persistence.Configuration;
 
 @Observable
 public class BuscadorAsientos  implements Serializable{
@@ -25,7 +28,7 @@ public class BuscadorAsientos  implements Serializable{
 	private List<Viaje> resultados;
 	private Viaje viajeSeleccionado;
 
-	
+
 	// ********************************************************
 	// ** Acciones
 	// ********************************************************
@@ -103,12 +106,15 @@ public class BuscadorAsientos  implements Serializable{
 	private void setResultados(ArrayList<Viaje> asientos) {
 		this.resultados = asientos;
 	}
+	
+	
 
 	public void comprar(BuscadorAsientosWindow window){
 		Asiento elAsiento = this.viajeSeleccionado.getAsientoUno();
 		try{
 			this.usuario.comprarAsiento(elAsiento);
 			this.buscar();
+			HomeAsiento.getInstance().update(elAsiento);
 			ExitoWindow ventanaExito = new ExitoWindow(window,"El asiento "+elAsiento.getCodigoDeVuelo()+"-"+elAsiento.getNumero()+" ha sido comprado exitosamente.");
 			ventanaExito.open();
 		}catch(NoPuedeComprarException e){
@@ -125,6 +131,7 @@ public class BuscadorAsientos  implements Serializable{
 		{
 			this.usuario.reservarAsiento(elAsiento);
 			this.buscar();
+			HomeAsiento.getInstance().update(elAsiento);
 			ExitoWindow ventanaOk = new ExitoWindow(buscadorAsientosWindow,"El asiento"+elAsiento.getCodigoDeVuelo()+"-"+elAsiento.getNumero()+" fue reservado exitosamente.");
 			ventanaOk.open();
 		} 

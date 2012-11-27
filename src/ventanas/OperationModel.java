@@ -31,12 +31,4 @@ public class OperationModel {
 		this.asientos = asientos;
 	}
 
-	{
-		for (Asiento asiento : asientos) {
-
-			HomeAsiento.getInstance().update(asiento);
-
-		}
-
-	}
 }
