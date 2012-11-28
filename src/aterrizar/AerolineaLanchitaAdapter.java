@@ -28,7 +28,7 @@ public class AerolineaLanchitaAdapter extends Entity implements AerolineaAdapter
 	private ArrayList<Asiento> asientosReservados = new ArrayList<Asiento>();
 	private String nombre = "Lanchita";
 
-	public void comprar(Asiento asiento, Usuario comprador) throws Exception {
+	public void comprar(Asiento asiento, Usuario comprador){
 		String codAsiento = asiento.getCodigoDeVuelo()+"-"+asiento.getNumero();
 		
 		try{

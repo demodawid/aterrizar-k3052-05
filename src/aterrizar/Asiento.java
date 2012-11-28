@@ -37,6 +37,7 @@ public class Asiento extends Entity {
 	private String ubicacion;
 	private String estado;
 	private int[] duracion;
+	private Usuario usuario;
 
 	public AerolineaAdapter aerolinea;
 	
@@ -126,6 +127,14 @@ public class Asiento extends Entity {
 	}
 	public void setPrecio(Float precio) {
 		this.precio = precio;
+	}
+	@Relation
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	
+	public void setUsuario(Usuario usuario){
+		this.usuario = usuario;
 	}
 	@Relation
 	public AerolineaAdapter getAerolinea() {

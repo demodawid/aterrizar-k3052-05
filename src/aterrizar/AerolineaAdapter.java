@@ -5,7 +5,7 @@ import uqbar.arena.persistence.annotations.PersistentClass;
 
 @PersistentClass
 public interface AerolineaAdapter{
-	public void comprar(Asiento asiento, Usuario usuario) throws Exception;
+	public void comprar(Asiento asiento, Usuario usuario);
 	public ArrayList<Viaje> buscarAsientos(String origen, String destino, String salida, String horaSalida, String llegada, String horaLlegada,Integer cantEscalas, Usuario usuario) throws Exception;
 	public int getPorcentajeImpuesto();
 	public void reservar(Asiento asiento, Usuario usuario);

@@ -32,7 +32,7 @@ public class AerolineaOceanicAdapter extends Entity implements AerolineaAdapter 
 		return porcentajeImpuesto;
 	}
 
-	public void comprar(Asiento asiento, Usuario usuario) throws Exception {
+	public void comprar(Asiento asiento, Usuario usuario) {
 		if(!this._aerolineaOceanic.comprarSiHayDisponibilidad(usuario.getDni(), asiento.getCodigoDeVuelo(), asiento.getNumero()))
 			throw new NoPuedeComprarException();
 		Reservas reserva = this.buscarReserva(asiento.getCodigoDeVuelo(),asiento.getNumero());

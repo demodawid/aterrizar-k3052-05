@@ -4,6 +4,8 @@ import homes.HomeAsiento;
 
 import java.io.Serializable;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.uqbar.commons.utils.Observable;
 import java.util.ArrayList;
 
@@ -49,6 +51,7 @@ public class BuscadorAsientos  implements Serializable{
 		} catch (FechaInvalidaException e) {
 			throw new UserException("Fecha invalida, por favor introduce una fecha valida.");
 		} catch (Exception e2){
+			e2.printStackTrace();
 			throw new UserException("Otro error");
 		}
 	}
@@ -112,15 +115,17 @@ public class BuscadorAsientos  implements Serializable{
 	public void comprar(BuscadorAsientosWindow window){
 		Asiento elAsiento = this.viajeSeleccionado.getAsientoUno();
 		try{
+			HomeAsiento.getInstance().create(elAsiento);
 			this.usuario.comprarAsiento(elAsiento);
-			this.buscar();
 			HomeAsiento.getInstance().update(elAsiento);
+			this.buscar();
 			ExitoWindow ventanaExito = new ExitoWindow(window,"El asiento "+elAsiento.getCodigoDeVuelo()+"-"+elAsiento.getNumero()+" ha sido comprado exitosamente.");
 			ventanaExito.open();
 		}catch(NoPuedeComprarException e){
 			ErrorWindow ventanaError = new ErrorWindow(window,"Ha ocurrido un error en su compra, el asiento no se encuentra disponible.");
 			ventanaError.open();
 		}catch(Exception e2){
+			e2.printStackTrace();
 			System.out.println("Error.");
 		}
 	}
@@ -131,6 +136,7 @@ public class BuscadorAsientos  implements Serializable{
 		{
 			this.usuario.reservarAsiento(elAsiento);
 			this.buscar();
+			HomeAsiento.getInstance().create(elAsiento);
 			HomeAsiento.getInstance().update(elAsiento);
 			ExitoWindow ventanaOk = new ExitoWindow(buscadorAsientosWindow,"El asiento"+elAsiento.getCodigoDeVuelo()+"-"+elAsiento.getNumero()+" fue reservado exitosamente.");
 			ventanaOk.open();

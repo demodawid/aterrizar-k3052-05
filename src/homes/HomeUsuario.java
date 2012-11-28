@@ -1,12 +1,13 @@
 package homes;
 
-/*import java.io.Serializable;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import aterrizar.AerolineaAdapter;
 import aterrizar.Asiento;
 import aterrizar.Usuario;
+import aterrizar.UsuarioEstandar;
 
 import org.uqbar.commons.utils.Observable;
 
@@ -27,14 +28,6 @@ public class HomeUsuario extends PersistentHome<Usuario> implements Serializable
 	private HomeUsuario() {
 	}
 	
-
-	///////VEERRR
-   // public void create(Asiento asiento) {
-//		super.create(asiento);
-	//}
-    
- 
-
 	@Override
 	public Class<Usuario> getEntityType() {
 		return Usuario.class;
@@ -42,7 +35,7 @@ public class HomeUsuario extends PersistentHome<Usuario> implements Serializable
 
 	@Override
 	public Usuario createExample() {
-		return ();
+		return new UsuarioEstandar();
 	}
 
-}*/
+}

@@ -101,7 +101,7 @@ public class SistemaDeComprasAterrizar {
 		return aerolineas.get(1);
 	}
 
-	public float comprar(Asiento asiento, Usuario usuario) throws Exception
+	public float comprar(Asiento asiento, Usuario usuario)
 	{
 		asiento.getAerolinea().comprar(asiento, usuario);
 		float precioTotal = (asiento.getPrecio()*((asiento.getAerolinea().getPorcentajeImpuesto()/100) + 1)) + usuario.impuestoAdicional();

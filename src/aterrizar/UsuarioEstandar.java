@@ -1,5 +1,7 @@
 package aterrizar;
 
+import java.util.ArrayList;
+
 import aterrizar.Asiento;
 import aterrizar.NivelImportancia;
 import aterrizar.NivelNormal;
@@ -14,16 +16,29 @@ public class UsuarioEstandar extends Usuario{
 	
 	public UsuarioEstandar(String nombre, String apellido, String dni)
 	{
-		super(nombre,apellido,dni);
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.dni = dni;
+		this.sistema = SistemaDeComprasAterrizar.getInstance();
+		this.historialDeBusquedas = new ArrayList<Asiento>();
 		this.gastosAcumulados = (float)0;
 		this.nivel = new NivelNormal();
 	}
 	
+	public UsuarioEstandar(){
+	}
+	
 
 	@Override
-	public void comprarAsiento(Asiento unAsiento) throws Exception{
-		float precioTotal = super.sistema.comprar(unAsiento, this);
-		this.registrarCompra(precioTotal);
+	public void comprarAsiento(Asiento unAsiento){
+		float precioTotal;
+		try {
+			precioTotal = SistemaDeComprasAterrizar.getInstance().comprar(unAsiento, this);
+			this.registrarCompra(precioTotal);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		this.asientosComprados.add(unAsiento);
 	}
 	

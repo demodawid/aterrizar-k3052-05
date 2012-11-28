@@ -1,7 +1,10 @@
 package aterrizar;
 
+import homes.HomeUsuario;
+
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.uqbar.commons.model.Entity;
 import org.uqbar.commons.utils.Observable;
@@ -16,6 +19,8 @@ import aterrizar.Viaje;
 import uqbar.arena.persistence.annotations.PersistentClass;
 import uqbar.arena.persistence.annotations.PersistentField;
 import uqbar.arena.persistence.annotations.Relation;
+import uqbar.arena.persistence.Configuration;
+
 
 
 @Transactional
@@ -28,6 +33,7 @@ public abstract class Usuario extends Entity{
 	protected String dni;
 	protected ArrayList<Asiento> asientosReservados = new ArrayList<Asiento>();
 	protected ArrayList<Asiento> asientosComprados = new ArrayList<Asiento>();
+	
 	
 	
 	protected SistemaDeComprasAterrizar sistema;
@@ -76,10 +82,15 @@ public abstract class Usuario extends Entity{
 	public void comprarAsiento(Asiento unAsiento) throws Exception{
 			sistema.comprar(unAsiento, this);
 			this.asientosComprados.add(unAsiento);
+			unAsiento.setUsuario(this);
+			this.getAsientosComprados().add(unAsiento);
+			HomeUsuario.getInstance().update(this);
 	}
 	public void reservarAsiento(Asiento unAsiento){
 			sistema.reservar(unAsiento, this);
 			this.asientosReservados.add(unAsiento);
+			unAsiento.setUsuario(this);
+			HomeUsuario.getInstance().update(this);
 		return;
 	}
 	
@@ -91,10 +102,14 @@ public abstract class Usuario extends Entity{
 	public String getNombre() {
 		return this.nombre;
 	}
-	public ArrayList<Asiento> getAsientosReservados() {
+	
+	@Relation
+	public List<Asiento> getAsientosReservados() {
 		return asientosReservados;
 	}
-	public ArrayList<Asiento> getAsientosComprados() {
+	
+	@Relation
+	public List<Asiento> getAsientosComprados() {
 		return asientosComprados;
 	}
 
@@ -113,5 +128,14 @@ public abstract class Usuario extends Entity{
 	public void agregarAsiento(Asiento unAsiento){
 		this.asientosComprados.add(unAsiento);
 		this.asientosReservados.add(unAsiento);
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+		
+	}
+
+	public void setDni(String string) {
+		this.dni = string;
 	}
 }

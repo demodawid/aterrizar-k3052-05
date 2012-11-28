@@ -31,9 +31,9 @@ public class HomeAsiento extends PersistentHome<Asiento> implements Serializable
 	
 
 	///////VEERRR
-   // public void create(Asiento asiento) {
-//		super.create(asiento);
-	//}
+   public void create(Asiento asiento) {
+		super.create(asiento);
+	}
     
     public List<Asiento> search(String fechaSal,int numero, String codigoDeVuelo, Float precio, String clase, String ubicacion,AerolineaAdapter aerolinea) {
 		Asiento example = new Asiento(fechaSal, numero, codigoDeVuelo, precio, clase, ubicacion, aerolinea);
